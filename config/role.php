@@ -71,7 +71,10 @@ $arr = [
                 'admin.listings',
                 'admin.listing.single.analytics',
             ],
-            'add' => [],
+            'add' => [
+                'admin.listing.create',
+                'admin.listing.store',
+            ],
             'edit' => [
                 'admin.listing.edit',
                 'admin.listing.setting',
@@ -603,6 +606,3 @@ $arr = [
 ];
 
 return $arr;
-
-
-
