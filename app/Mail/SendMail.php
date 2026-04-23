@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -38,6 +37,9 @@ class SendMail extends Mailable
 	 */
 	public function build()
 	{
-		return $this->from($this->from_email, $this->site_title)->view('layouts.mail')->with('msg', $this->message);
+		return $this->from($this->from_email, $this->site_title)
+			->subject($this->subject)
+			->view('layouts.mail')
+			->with('msg', $this->message);
 	}
 }
