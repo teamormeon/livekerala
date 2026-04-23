@@ -170,6 +170,8 @@ Route::group(['prefix' => $basicControl->admin_prefix ?? 'admin', 'as' => 'admin
 
         Route::get('/listings', [ListingController::class, 'listings'])->name('listings');
         Route::get('/listings-search', [ListingController::class, 'listingSearch'])->name('listing.search');
+        Route::get('/listing/create', [\App\Http\Controllers\Admin\ListingCreateController::class, 'create'])->name('listing.create');
+        Route::post('/listing/store', [\App\Http\Controllers\Admin\ListingCreateController::class, 'store'])->name('listing.store');
         Route::get('/listing/edit/{id}', [ListingController::class, 'listingEdit'])->name('listing.edit');
         Route::post('/listing/update/{id}', [ListingController::class, 'listingUpdate'])->name('listing.update');
 
@@ -265,33 +267,22 @@ Route::group(['prefix' => $basicControl->admin_prefix ?? 'admin', 'as' => 'admin
         Route::post('/claim-business/approve/{id}', [ClaimBusinessController::class, 'claimBusinessApprove'])->name('claim.business.approve');
         Route::post('/claim-business/reject/{id}', [ClaimBusinessController::class, 'claimBusinessReject'])->name('claim.business.reject');
 
-        Route::get('/contact-message', [ContactMessageController::class, 'contactMessage'])->name('contact.message');
-        Route::get('/contact-message/search', [ContactMessageController::class, 'contactMessageSearch'])->name('contact.message.search');
-        Route::post('/contact-message/delete-multiple', [ContactMessageController::class, 'contactMessageDeleteMultiple'])->name('contact.message.delete.multiple');
+        Route::get('contact-message', [ContactMessageController::class, 'contactMessage'])->name('contact.message');
+        Route::get('contact-message/search', [ContactMessageController::class, 'contactMessageSearch'])->name('contact.message.search');
+        Route::post('contact-message/delete-multiple', [ContactMessageController::class, 'contactMessageDeleteMultiple'])->name('contact.message.delete.multiple');
 
-        Route::get('/subscriber', [SubscriberController::class, 'subscriber'])->name('subscriber');
-        Route::get('/subscriber/search', [SubscriberController::class, 'subscriberSerach'])->name('subscriber.search');
-        Route::post('/subscriber/delete-multiple', [SubscriberController::class, 'subscriberDeleteMultiple'])->name('subscriber.delete.multiple');
-        Route::get('/subscriber/send-email', [SubscriberController::class, 'subscriberSendEmailForm'])->name('subscriber.send.email.form');
-        Route::post('/subscriber/send-email', [SubscriberController::class, 'subscriberSendEmail'])->name('subscriber.send.email');
+        Route::get('/subscribers', [SubscriberController::class, 'subscribers'])->name('subscriber');
+        Route::get('/subscribers-search', [SubscriberController::class, 'subscribersSearch'])->name('subscriber.search');
+        Route::post('/subscribers/delete-multiple', [SubscriberController::class, 'subscribersDeleteMultiple'])->name('subscriber.delete.multiple');
+        Route::get('/send-mail-subscriber', [SubscriberController::class, 'sendMailSubscriber'])->name('subscriber.send.email.form');
+        Route::post('/send-mail-subscriber', [SubscriberController::class, 'sendMailSubscriberStore'])->name('subscriber.send.email');
 
+        Route::get('settings', [BasicControlController::class, 'index'])->name('settings');
+        Route::match(['get', 'post'], 'basic-control', [BasicControlController::class, 'basicControl'])->name('basic.control');
+        Route::post('basic-control/update', [BasicControlController::class, 'basicControlUpdate'])->name('basic.control.update');
+        Route::post('basic-control/activity-update', [BasicControlController::class, 'basicControlActivityUpdate'])->name('basic.control.activity.update');
 
-        /*== Control Panel ==*/
-        Route::get('settings/{settings?}', [BasicControlController::class, 'index'])->name('settings');
-        Route::get('basic-control', [BasicControlController::class, 'basicControl'])->name('basic.control');
-        Route::post('basic-control-update', [BasicControlController::class, 'basicControlUpdate'])->name('basic.control.update');
-        Route::post('basic-control-activity-update', [BasicControlController::class, 'basicControlActivityUpdate'])->name('basic.control.activity.update');
-        Route::get('currency-exchange-api-config', [BasicControlController::class, 'currencyExchangeApiConfig'])->name('currency.exchange.api.config');
-        Route::post('currency-exchange-api-config/update', [BasicControlController::class, 'currencyExchangeApiConfigUpdate'])->name('currency.exchange.api.config.update');
-
-        /* ===== ADMIN SOCIALITE ===== */
-        Route::get('socialite', [SocialiteController::class, 'index'])->name('socialite.index');
-        Route::match(['get', 'post'], 'google-config', [SocialiteController::class, 'googleConfig'])->name('google.control');
-        Route::match(['get', 'post'], 'facebook-config', [SocialiteController::class, 'facebookConfig'])->name('facebook.control');
-        Route::match(['get', 'post'], 'github-config', [SocialiteController::class, 'githubConfig'])->name('github.control');
-
-        // manage theme
-        Route::get('/manage/theme', [ManageThemeController::class, 'manageTheme'])->name('manage.theme');
+        Route::match(['get', 'post'], 'manage/theme', [ManageThemeController::class, 'manageTheme'])->name('manage.theme');
         Route::get('/manage/theme/select/{val}', [ManageThemeController::class, 'manageThemeSelect'])->name('manage.theme.select');
 
         // cookies manage
@@ -548,5 +539,3 @@ Route::group(['prefix' => $basicControl->admin_prefix ?? 'admin', 'as' => 'admin
 
 
 });
-
-
