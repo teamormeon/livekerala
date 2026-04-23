@@ -30,11 +30,7 @@
                 <form action="{{ route('admin.listing.create') }}" method="get" class="row g-3 align-items-end">
                     <div class="col-lg-5">
                         <label class="form-label">@lang('Listing Owner') <span class="text-danger">*</span></label>
-                        <select class="js-select form-select @error('user_id') is-invalid @enderror" name="user_id" id="listingOwnerSelect"
-                                data-hs-tom-select-options='{
-                                  "placeholder": "Select owner",
-                                  "hideSearch": false
-                                }'>
+                        <select class="js-select form-select @error('user_id') is-invalid @enderror" name="user_id" id="listingOwnerSelect">
                             <option value="">@lang('Select Owner')</option>
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}" {{ (string) old('user_id', $selectedUserId) === (string) $user->id ? 'selected' : '' }}>
@@ -49,11 +45,7 @@
 
                     <div class="col-lg-5">
                         <label class="form-label">@lang('Active Package') <span class="text-danger">*</span></label>
-                        <select class="js-select form-select @error('purchase_package_id') is-invalid @enderror" name="purchase_package_id"
-                                data-hs-tom-select-options='{
-                                  "placeholder": "Select package",
-                                  "hideSearch": false
-                                }'>
+                        <select class="js-select form-select @error('purchase_package_id') is-invalid @enderror" name="purchase_package_id">
                             <option value="">@lang('Select Package')</option>
                             @foreach($packages as $package)
                                 <option value="{{ $package->id }}" {{ (string) old('purchase_package_id', $selectedPackageId) === (string) $package->id ? 'selected' : '' }}>
@@ -235,10 +227,6 @@
         @endif
 
         $(document).ready(function () {
-            HSCore.components.HSTomSelect.init('.js-select', {
-                maxOptions: 250,
-            });
-
             $('#listingOwnerSelect').on('change', function () {
                 $(this).closest('form').submit();
             });
