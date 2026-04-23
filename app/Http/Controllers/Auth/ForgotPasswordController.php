@@ -3,21 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\SendResetPasswordMail;
+use App\Mail\SendMail;
 use App\Models\Page;
 use App\Models\User;
-use App\Traits\Notify;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
 class ForgotPasswordController extends Controller
 {
-    use Notify;
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
@@ -43,22 +40,35 @@ class ForgotPasswordController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users',
         ]);
+
         try {
             $token = Str::random(64);
-            DB::table('password_resets')->insert([
-                'email' => $request->email,
-                'token' => $token,
-                'created_at' => Carbon::now()
-            ]);
-
             $userEmail = $request->email;
-            $user = User::where('email', $userEmail)->first();
+            $user = User::where('email', $userEmail)->firstOrFail();
+            $passwordResetTable = config('auth.passwords.users.table', 'password_reset_tokens');
 
-            $params = [
-                'message' => '<a href="' . url('password/reset', $token) . '?email=' . $userEmail . '" target="_blank">Click To Reset Password</a>'
-            ];
+            DB::table($passwordResetTable)->updateOrInsert(
+                ['email' => $userEmail],
+                [
+                    'token' => $token,
+                    'created_at' => Carbon::now(),
+                ]
+            );
 
-            $this->mail($user, 'PASSWORD_RESET', $params);
+            $resetLink = url('password/reset', $token) . '?email=' . urlencode($userEmail);
+            $basic = basicControl();
+            $subject = 'Password Reset';
+            $message = str_replace(
+                ['[[name]]', '[[message]]'],
+                [
+                    $user->username,
+                    '<a href="' . $resetLink . '" target="_blank">Click To Reset Password</a>'
+                ],
+                $basic->email_description
+            );
+
+            Mail::to($user)->send(new SendMail($basic->sender_email, $subject, $message));
+
             return back()->with('success', 'We have e-mailed your password reset link!');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
