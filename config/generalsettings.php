@@ -66,9 +66,9 @@ return [
             'short_description' => 'Message your customers, reCAPTCHA protects, google analytics your website and so on.',
         ],
         'Socialite' => [
-            'route' => 'admin.socialite.index',
+            'route' => 'admin.plugin.config',
             'icon' => 'fas fa-share-alt',
-            'short_description' => 'Socialite settings such as, advantage for user login there dashboard without register process.',
+            'short_description' => 'Social login settings for user authentication providers.',
         ],
         'map' => [
             'route' => 'admin.map.config',
@@ -164,17 +164,17 @@ return [
     ],
     'Socialite' => [
         'google-control' => [
-            'route' => 'admin.google.control',
+            'route' => 'admin.plugin.config',
             'icon' => 'fab fa-google',
             'short_description' => 'Socialite login your customers,they\'ll love you for it.',
         ],
         'facebook-control' => [
-            'route' => 'admin.facebook.control',
+            'route' => 'admin.plugin.config',
             'icon' => 'fab fa-facebook-f',
             'short_description' => 'Socialite login your customers,they\'ll love you for it.',
         ],
         'github-control' => [
-            'route' => 'admin.github.control',
+            'route' => 'admin.plugin.config',
             'icon' => 'fab fa-github',
             'short_description' => 'Socialite login your customers,they\'ll love you for it.',
         ],
