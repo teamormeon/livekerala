@@ -103,12 +103,10 @@
                             <div class="col-auto">
                                 @if($growthPercentagePending > 0)
                                     <span class="badge bg-soft-success text-success p-1">
-                                        <i class="bi-graph-up"></i> {{ number_format($growthPercentagePending , 2) }}%
-                                    </span>
+                                        <i class="bi-graph-up"></i> {{ number_format($growthPercentagePending , 2) }}%</span>
                                 @else
                                     <span class="badge bg-soft-danger text-danger p-1">
-                                        <i class="bi-graph-down"></i> {{ number_format($growthPercentagePending , 2) }}%
-                                    </span>
+                                        <i class="bi-graph-down"></i> {{ number_format($growthPercentagePending , 2) }}%</span>
                                 @endif
                             </div>
                         </div>
@@ -182,6 +180,12 @@
                     </div>
 
                     <div class="d-grid d-sm-flex justify-content-md-end align-items-sm-center gap-2">
+                        @if(adminAccessRoute(config('role.manage_listing.access.add')))
+                            <a class="btn btn-primary btn-sm" href="{{ route('admin.listing.create') }}">
+                                <i class="bi-plus-circle me-1"></i> @lang('Create Listing')
+                            </a>
+                        @endif
+
                         @if(adminAccessRoute(config('role.manage_listing.access.delete')))
                             <div id="datatableCounterInfo">
                                 <div class="d-flex align-items-center">
@@ -350,62 +354,61 @@
                            },
                            "search": "#datatableSearch",
                            "entries": "#datatableEntries",
-                           "pageLength": 15,
+                           "pageLength": 10,
                            "isResponsive": false,
                            "isShowPaging": false,
                            "pagination": "datatablePagination"
                          }'>
                         <thead class="thead-light">
                         <tr>
-                            <th class="table-column-pe-0">
+                            <th scope="col" class="table-column-pe-0">
                                 <div class="form-check">
                                     <input class="form-check-input check-all tic-check" type="checkbox" name="check-all"
                                            id="datatableCheckAll">
                                     <label class="form-check-label" for="datatableCheckAll"></label>
                                 </div>
                             </th>
-                            <th>@lang('User')</th>
-                            <th>@lang('Package')</th>
-                            <th>@lang('Category')</th>
-                            <th>@lang('Listing Title')</th>
-                            <th>@lang('Stage')</th>
-                            <th>@lang('Status')</th>
-                            <th>@lang('Created Date')</th>
-                            <th>@lang('Action')</th>
+                            <th scope="col">@lang('User')</th>
+                            <th scope="col">@lang('Package')</th>
+                            <th scope="col">@lang('Category')</th>
+                            <th scope="col">@lang('Listing')</th>
+                            <th scope="col">@lang('Stage')</th>
+                            <th scope="col">@lang('Status')</th>
+                            <th scope="col">@lang('Created at')</th>
+                            <th scope="col">@lang('Action')</th>
                         </tr>
                         </thead>
-
-                        <tbody>
-
-                        </tbody>
                     </table>
                 </div>
-
 
                 <div class="card-footer">
                     <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
                         <div class="col-sm mb-2 mb-sm-0">
                             <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
                                 <span class="me-2">@lang('Showing:')</span>
+
                                 <div class="tom-select-custom">
-                                    <select id="datatableEntries"
-                                            class="js-select form-select form-select-borderless w-auto"
+                                    <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto"
                                             autocomplete="off"
                                             data-hs-tom-select-options='{
-                                                "searchInDropdown": false,
-                                                "hideSearch": true
-                                              }'>
+                                              "searchInDropdown": false,
+                                              "hideSearch": true
+                                            }'>
                                         <option value="10">10</option>
                                         <option value="15" selected>15</option>
                                         <option value="20">20</option>
+                                        <option value="25">25</option>
                                     </select>
                                 </div>
-                                <span class="text-secondary me-2">of</span>
+
+                                <span class="text-secondary me-2">@lang('of')</span>
+
                                 <span id="datatableWithPaginationInfoTotalQty"></span>
                             </div>
                         </div>
+
                         <div class="col-sm-auto">
-                            <div class="d-flex  justify-content-center justify-content-sm-end">
+                            <div class="d-flex justify-content-center justify-content-sm-end">
                                 <nav id="datatablePagination" aria-label="Activity pagination"></nav>
                             </div>
                         </div>
@@ -414,58 +417,55 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="soldPlanDeleteMultipleModal" tabindex="-1" role="dialog"
+
+    {{--delete modal--}}
+    <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         data-bs-backdrop="static"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="" method="post" id="deleteForm">
+                @csrf
+                @method('delete')
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="deleteModalLabel"><i class="bi bi-check2-square"></i> @lang("Delete Confirmation")</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>@lang('Are you sure to delete this listing?')</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-bs-dismiss="modal">@lang('No')</button>
+                        <button type="submit" class="btn btn-primary">@lang('Yes')</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{--delete multiple modal--}}
+    <div id="soldPlanDeleteMultipleModal" class="modal fade" tabindex="-1" role="dialog"
          aria-labelledby="soldPlanDeleteMultipleModalLabel" data-bs-backdrop="static"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="soldPlanDeleteMultipleLabel"><i
-                            class="fa-light fa-square-check"></i> @lang('Confirmation')</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="" method="post">
-                    @csrf
-                    <div class="modal-body">
-                        @lang('Do you want to delete all selected Listing data?')
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-white" data-bs-dismiss="modal">@lang('Close')</button>
-                        <button type="submit" class="btn btn-primary delete-multiple">@lang('Confirm')</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    {{--delete listing modal--}}
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-         data-bs-backdrop="static"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="deleteModalLabel"><i
-                            class="bi bi-check2-square"></i> @lang("Confirmation")</h4>
+                    <h4 class="modal-title" id="soldPlanDeleteMultipleModalLabel"><i
+                            class="bi bi-check2-square"></i> @lang('Delete Confirmation')</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>@lang("Do you want to delete this Listing")</p>
+                    <p>@lang('Are you sure delete all selected data?')</p>
                 </div>
-                <form id="deleteForm" action="" method="post" class="setRoute">
-                    @csrf
-                    @method("DELETE")
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-white" data-bs-dismiss="modal">@lang('Close')</button>
-                        <button type="submit" class="btn btn-primary">@lang('Confirm')</button>
-                    </div>
-                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-bs-dismiss="modal">@lang('No')</button>
+                    <button type="button" class="btn btn-primary delete-multiple">@lang('Yes')</button>
+                </div>
             </div>
         </div>
     </div>
 
-
-    {{--multi aproved modal--}}
+    {{--multiple approved modal--}}
     <div class="modal fade" id="multiApprovedModal" tabindex="-1" role="dialog"
          aria-labelledby="multiApprovedModalLabel"
          data-bs-backdrop="static"
@@ -474,11 +474,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="multiApprovedModalLabel"><i
-                            class="bi bi-check2-square"></i> @lang("Approved Listing Confirmation")</h4>
+                            class="bi bi-check2-square"></i> @lang("Multiple Approved Listing Confirmation")</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>@lang('Are you really want to approved the Listing?')</p>
+                    <p>@lang('Are you sure to approved all selected listing?')</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-bs-dismiss="modal">@lang('No')</button>
@@ -488,7 +488,7 @@
         </div>
     </div>
 
-    {{--multi rejected modal--}}
+    {{--multiple rejected modal--}}
     <div class="modal fade" id="multiRejectedModal" tabindex="-1" role="dialog"
          aria-labelledby="multiRejectedModalLabel"
          data-bs-backdrop="static"
@@ -497,11 +497,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="multiRejectedModalLabel"><i
-                            class="bi bi-check2-square"></i> @lang("Rejected Listing Confirmation")</h4>
+                            class="bi bi-check2-square"></i> @lang("Multiple Rejected Listing Confirmation")</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>@lang("Are you really want to rejected the Listing?")</p>
+                    <p>@lang('Are you sure to rejected all selected listing?')</p>
                     <div class="form-group">
                         <label for="">@lang('Write you reason')</label> <span class="text-danger">*</span>
                         <textarea name="reject_reason" id="multi_reject_reason" rows="4" class="form-control"
