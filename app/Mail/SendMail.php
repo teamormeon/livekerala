@@ -4,6 +4,9 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class SendMail extends Mailable
@@ -29,17 +32,21 @@ class SendMail extends Mailable
 		$this->message = $message;
 	}
 
-
-	/**
-	 * Build the message.
-	 *
-	 * @return $this
-	 */
-	public function build()
+	public function envelope(): Envelope
 	{
-		return $this->from($this->from_email, $this->site_title)
-			->subject($this->subject)
-			->view('layouts.mail')
-			->with('msg', $this->message);
+		return new Envelope(
+			from: new Address($this->from_email, $this->site_title),
+			subject: $this->subject,
+		);
+	}
+
+	public function content(): Content
+	{
+		return new Content(
+			view: 'layouts.mail',
+			with: [
+				'msg' => $this->message,
+			],
+		);
 	}
 }
