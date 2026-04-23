@@ -59,7 +59,7 @@
                                         <input type="file" id="seoImageUpload" class="form-control-file" name="seo_image">
                                         <span>@lang('Select Image')</span>
                                     </div>
-                                    <img id="seo" class="thumbnail" src="{{ getFile(@$listing_seo->driver, @$listing_seo->seo_image) }}" alt="SEO Image">
+                                    <img id="seo" class="thumbnail {{ empty(@$listing_seo->seo_image) ? 'd-none' : '' }}" src="{{ !empty(@$listing_seo->seo_image) ? getFile(@$listing_seo->driver, @$listing_seo->seo_image) : '' }}" alt="SEO Image">
                                 </div>
                             </div>
                         </div>
@@ -89,6 +89,3 @@
         })
     </script>
 @endpush
-
-
-
