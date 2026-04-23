@@ -17,14 +17,14 @@ use Illuminate\Support\Facades\Storage;
 if (!function_exists('getTheme')) {
     function getTheme()
     {
-        return session('active_theme') ?? basicControl()->theme ?? 'light';
+        return session('active_theme') ?? optional(basicControl())->theme ?? 'light';
     }
 }
 
 if (!function_exists('template')) {
     function template($asset = false)
     {
-        $theme = session('active_theme') ?? basicControl()->theme;
+        $theme = session('active_theme') ?? optional(basicControl())->theme ?? 'light';
         if ($asset) {
             return 'assets/themes/' . $theme . '/';
         }
@@ -34,7 +34,7 @@ if (!function_exists('template')) {
 if (!function_exists('footerData')) {
     function footerData()
     {
-        $selectedTheme = session('active_theme') ?? basicControl()->theme;
+        $selectedTheme = session('active_theme') ?? optional(basicControl())->theme ?? 'light';
         $contentDetails = ContentDetails::with('content')
             ->whereHas('content', function ($query) {
                 $query->where('theme', getTheme())
@@ -812,7 +812,7 @@ if (!function_exists('recursive_array_replace')) {
 if (!function_exists('getHeaderMenuData')) {
     function getHeaderMenuData()
     {
-        $selectedTheme = \basicControl()->theme;
+        $selectedTheme = getTheme();
         $menu = Cache::remember("header_manage_menu_{$selectedTheme}", now()->addMinutes(30),
             function () use ($selectedTheme) {
                 return ManageMenu::where('template_name', $selectedTheme)->where('menu_section', 'header')->first();
@@ -949,7 +949,7 @@ if (!function_exists('renderHeaderMenu')) {
 if (!function_exists('getFooterMenuData')) {
     function getFooterMenuData($type)
     {
-        $selectedTheme = \basicControl()->theme;
+        $selectedTheme = getTheme();
         $menu = Cache::remember("footer_manage_menu_{$selectedTheme}", now()->addMinutes(30),
             function () use ($selectedTheme) {
                 return ManageMenu::where('template_name', $selectedTheme)->where('menu_section', 'footer')->first();
