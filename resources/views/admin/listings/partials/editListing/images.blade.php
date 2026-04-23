@@ -8,7 +8,7 @@
                         <input type="file" id="thumbnailImageUpload" class="form-control-file" name="thumbnail">
                         <span>@lang('Select Image')</span>
                     </div>
-                    <img id="thumbnail" class="thumbnail" src="{{ getFile($single_listing_infos->thumbnail_driver, $single_listing_infos->thumbnail) }}" alt="Image Thumbnail">
+                    <img id="thumbnail" class="thumbnail {{ empty($single_listing_infos->thumbnail) ? 'd-none' : '' }}" src="{{ !empty($single_listing_infos->thumbnail) ? getFile($single_listing_infos->thumbnail_driver, $single_listing_infos->thumbnail) : '' }}" alt="Image Thumbnail">
                 </div>
             </div>
             <div class="col-xl-8 custom-margin">
