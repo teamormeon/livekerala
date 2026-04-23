@@ -67,7 +67,7 @@ trait Notify
             $email_from = $basic->sender_email;
 
 
-            Mail::to($user)->queue(new SendMail($email_from, $subject, $message));
+            Mail::to($user)->send(new SendMail($email_from, $subject, $message));
         } catch (\Exception $exception) {
             return true;
         }
@@ -521,7 +521,7 @@ trait Notify
         $admins = Admin::all();
         foreach ($admins as $admin) {
             $message = str_replace("[[name]]", $admin->username, $message);
-            Mail::to($admin)->queue(new SendMail($email_from, $subject, $message));
+            Mail::to($admin)->send(new SendMail($email_from, $subject, $message));
         }
     }
 
