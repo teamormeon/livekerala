@@ -5,6 +5,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class SidebarDataService
 {
@@ -38,12 +39,19 @@ class SidebarDataService
                 ])
                 ->first();
 
-            $payoutCounts = DB::table('payouts')
-                ->select([
-                    DB::raw('COUNT(CASE WHEN status = 1 THEN 1 END) as payout_pending'),
-                    DB::raw('COUNT(CASE WHEN status = 2 THEN 1 END) as payout_approved')
-                ])
-                ->first();
+            $payoutCounts = (object) [
+                'payout_pending' => 0,
+                'payout_approved' => 0,
+            ];
+
+            if (Schema::hasTable('payouts')) {
+                $payoutCounts = DB::table('payouts')
+                    ->select([
+                        DB::raw('COUNT(CASE WHEN status = 1 THEN 1 END) as payout_pending'),
+                        DB::raw('COUNT(CASE WHEN status = 2 THEN 1 END) as payout_approved')
+                    ])
+                    ->first();
+            }
 
             return (object)array_merge((array)$userCounts, (array)$kycCounts, (array)$depositCounts, (array)$payoutCounts);
 
