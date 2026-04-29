@@ -258,6 +258,53 @@
     });
 </script>
 @endauth
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const countrySelect = document.getElementById('country_id');
+        const stateSelect = document.getElementById('state_id');
+        const citySelect = document.getElementById('city_id');
+
+        if (!countrySelect || !stateSelect || !citySelect) {
+            return;
+        }
+
+        const stateWrapper = stateSelect.closest('.input-box');
+        if (stateWrapper) {
+            stateWrapper.style.display = 'none';
+        }
+
+        const triggerStateChange = () => {
+            if (window.jQuery) {
+                window.jQuery(stateSelect).trigger('change');
+                return;
+            }
+            stateSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        };
+
+        const selectAvailableState = () => {
+            const validOptions = Array.from(stateSelect.options).filter(option => option.value);
+            if (!validOptions.length) {
+                return;
+            }
+
+            if (!stateSelect.value) {
+                stateSelect.value = validOptions[0].value;
+            }
+
+            triggerStateChange();
+        };
+
+        const observer = new MutationObserver(function () {
+            selectAvailableState();
+        });
+
+        observer.observe(stateSelect, { childList: true });
+
+        if (stateSelect.options.length > 1) {
+            selectAvailableState();
+        }
+    });
+</script>
 @stack('script')
 
 @include(template().'partials.notification')
