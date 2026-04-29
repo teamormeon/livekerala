@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             ContentSeeder::class,
             ContentDetailsSeeder::class,
             PageDetailsSeeder::class,
+            KeralaDistrictSeeder::class,
 
         ]);
     }
