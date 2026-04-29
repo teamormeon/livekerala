@@ -12,5 +12,7 @@
     "Cities" : "Cities",
     "Select City" : "Select City",
     "Location" : "District & City",
-    "Search Location" : "Search Address"
+    "Search Location" : "Search Address",
+    "All Districts" : "All Districts",
+    "All Cities" : "All Cities"
 }
