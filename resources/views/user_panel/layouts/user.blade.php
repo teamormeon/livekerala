@@ -269,8 +269,21 @@
         }
 
         const stateWrapper = stateSelect.closest('.input-box');
+        const countryWrapper = countrySelect.closest('.input-box');
+        const stateFeedback = stateWrapper ? stateWrapper.querySelector('.invalid-feedback') : null;
+        const countryFeedback = countryWrapper ? countryWrapper.querySelector('.invalid-feedback') : null;
+
         if (stateWrapper) {
             stateWrapper.style.display = 'none';
+        }
+
+        if (stateSelect.classList.contains('is-invalid') && countrySelect) {
+            countrySelect.classList.add('is-invalid');
+            if (countryFeedback) {
+                countryFeedback.textContent = stateFeedback && stateFeedback.textContent.trim()
+                    ? stateFeedback.textContent.trim()
+                    : 'Please choose a district to load its cities.';
+            }
         }
 
         const triggerStateChange = () => {
@@ -279,6 +292,13 @@
                 return;
             }
             stateSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        };
+
+        const clearDistrictError = () => {
+            if (countryFeedback && countryFeedback.textContent === 'Please choose a district to load its cities.') {
+                countryFeedback.textContent = '';
+            }
+            countrySelect.classList.remove('is-invalid');
         };
 
         const selectAvailableState = () => {
@@ -291,6 +311,7 @@
                 stateSelect.value = validOptions[0].value;
             }
 
+            clearDistrictError();
             triggerStateChange();
         };
 
