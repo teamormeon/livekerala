@@ -26,9 +26,9 @@
                                 </div>
                                 <div class="input-group mb-3">
                                     <select class="js-example-basic-single form-control" name="location">
-                                        <option selected disabled>@lang('Select Country')</option>
+                                        <option selected disabled>@lang('Select District')</option>
                                         <option value="all"
-                                                @if(request()->location == 'all') selected @endif>@lang('All Country')
+                                                @if(request()->location == 'all') selected @endif>@lang('All Districts')
                                         </option>
                                         @foreach($all_places as $place)
                                             @if($place != null)
@@ -44,7 +44,7 @@
                                     <select class="js-example-basic-single form-control" name="city">
                                         <option selected disabled>@lang('Select City')</option>
                                         <option value="all"
-                                                @if(request()->city == 'all') selected @endif>@lang('All City')
+                                                @if(request()->city == 'all') selected @endif>@lang('All Cities')
                                         </option>
                                         @foreach($uniqueCities as $city)
                                             @if($city != null)
