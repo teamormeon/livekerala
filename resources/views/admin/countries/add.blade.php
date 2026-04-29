@@ -1,17 +1,17 @@
 @extends('admin.layouts.app')
-@section('page_title', __('Add Country'))
+@section('page_title', __('Add District'))
 @section('content')
     <div class="content container-fluid">
         <div class="page-header">
             <div class="row align-items-end">
                 <div class="col-sm">
-                    <h1 class="page-header-title">@lang("Add Country")</h1>
+                    <h1 class="page-header-title">@lang("Add District")</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb breadcrumb-no-gutter">
                             <li class="breadcrumb-item"><a class="breadcrumb-link"
                                                            href="{{ route('admin.dashboard') }}">@lang('Dashboard')</a></li>
                             <li class="breadcrumb-item active"
-                                aria-current="page">@lang("Countries")</li>
+                                aria-current="page">@lang("Districts")</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                 <div class="d-grid gap-3 gap-lg-5">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
-                            <h3 class="card-title mt-2">@lang("Add Country Form")</h3>
+                            <h3 class="card-title mt-2">@lang("Add District Form")</h3>
                             <a href="{{ route('admin.all.country') }}" class="btn btn-primary">@lang("Back")</a>
                         </div>
                         <div class="card-body mt-2">
@@ -34,11 +34,11 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="NameLabel" class="form-label  ">@lang("Country Name")</label>
+                                            <label for="NameLabel" class="form-label  ">@lang("District Name")</label>
                                             <div class="input-group input-group-sm-vertical">
                                                 <input type="text" class="form-control change_name_input"  name="name" value="{{ old('name') }}"
                                                        id="NameLabel"
-                                                       placeholder="@lang("Country Name")" autocomplete="off">
+                                                       placeholder="@lang("District Name")" autocomplete="off">
                                             </div>
                                             @error("name")
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
@@ -49,8 +49,8 @@
                                         <div class="form-group">
                                             <label for="ISO TWO" class="form-label  ">@lang("Iso2")</label>
                                             <div class="input-group mb-3">
-                                                <input type="text" name="iso2" value="{{ old('iso2') }}" class="form-control" placeholder="Country Two Character ISO"
-                                                       aria-label="Country Two Character ISO" aria-describedby="Country Two Character ISO">
+                                                <input type="text" name="iso2" value="{{ old('iso2') }}" class="form-control" placeholder="District Two Character Code"
+                                                       aria-label="District Two Character Code" aria-describedby="District Two Character Code">
                                             </div>
 
                                             @error("iso2")
@@ -63,8 +63,8 @@
                                         <div class="form-group">
                                             <label for="iso3" class="form-label  ">@lang("Iso3")</label>
                                             <div class="input-group mb-3">
-                                                <input type="text" name="iso3" value="{{ old('iso3') }}" class="form-control" placeholder="Country Three Character ISO"
-                                                       aria-label="Country Three Character ISO" aria-describedby="ISO Three">
+                                                <input type="text" name="iso3" value="{{ old('iso3') }}" class="form-control" placeholder="District Three Character Code"
+                                                       aria-label="District Three Character Code" aria-describedby="ISO Three">
                                             </div>
                                             @error("iso3")
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
@@ -79,7 +79,7 @@
                                             <div class="input-group input-group-sm-vertical">
                                                 <input type="text" class="form-control change_name_input" name="phone_code" value="{{ old('phone_code') }}"
                                                        id="NameLabel"
-                                                       placeholder="@lang("Country Phone Code")" autocomplete="off">
+                                                       placeholder="@lang("District Phone Code")" autocomplete="off">
                                             </div>
                                             @error("phone_code")
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
@@ -91,13 +91,13 @@
                                             <label for="NameLabel"
                                                    class="form-label">@lang("Region")
                                                 <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                   aria-label="@lang('Add Country Region.')" data-bs-original-title="@lang('Add Country Region.')"></i>
+                                                   aria-label="@lang('Add District Region.')" data-bs-original-title="@lang('Add District Region.')"></i>
                                             </label>
                                             <input type="text" class="form-control change_name_input"
                                                    name="region"
                                                    id="NameLabel"
                                                    value="{{ old('region') }}"
-                                                   placeholder="@lang("Country Region")"
+                                                   placeholder="@lang("District Region")"
                                                    autocomplete="off">
 
                                             @error("region")
@@ -110,10 +110,10 @@
                                             <label for="NameLabel"
                                                    class="form-label ">@lang("Sub Region")
                                                 <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                   aria-label="@lang('Add Country Sub Region.')" data-bs-original-title="@lang('Add Country Sub Region.')"></i>
+                                                   aria-label="@lang('Add District Sub Region.')" data-bs-original-title="@lang('Add District Sub Region.')"></i>
                                             </label>
                                             <input type="text" class="form-control" name="subregion"
-                                                   placeholder="@lang('Country Sub Region')"
+                                                   placeholder="@lang('District Sub Region')"
                                                    aria-label=""
                                                    value="{{ old('subregion') }}"
                                                    aria-describedby="">
@@ -124,7 +124,7 @@
                                     </div>
 
                                     <div class="col-md-6 mt-3">
-                                        <label class="form-label" for="cImage">@lang(stringToTitle('Country image'))</label>
+                                        <label class="form-label" for="cImage">@lang(stringToTitle('District image'))</label>
                                         <label class="form-check form-check-dashed" for="logoUploader" id="content_img">
                                             <img id="contentImg"
                                                  class="avatar avatar-xl avatar-4x3 avatar-centered h-100 mb-2"
@@ -156,7 +156,7 @@
                                                         <div class="row align-items-center">
                                                             <div class="col-sm mb-2 mb-sm-0">
                                                                 <h5 class="mb-0">@lang('Status')</h5>
-                                                                <p class="fs-5 text-body mb-0">@lang('Country status enable or Disable for hide or unhide country. ')</p>
+                                                                <p class="fs-5 text-body mb-0">@lang('District status enable or Disable for hide or unhide district. ')</p>
                                                             </div>
                                                             <div class="col-sm-auto d-flex align-items-center">
                                                                 <div class="form-check form-switch form-switch-google">
@@ -178,7 +178,7 @@
 
                                 <div class="d-flex justify-content-end mt-4">
                                     <button type="submit"
-                                            class="btn btn-primary submit_btn">@lang("Add Country")</button>
+                                            class="btn btn-primary submit_btn">@lang("Add District")</button>
                                 </div>
                             </form>
                         </div>
@@ -202,11 +202,3 @@
         });
     </script>
 @endpush
-
-
-
-
-
-
-
-
