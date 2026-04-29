@@ -153,7 +153,7 @@ class CountryController extends Controller
             $country->region = $request->region;
             $country->subregion = $request->subregion;
             $country->save();
-            return back()->with('success','Country Added Successfully.');
+            return back()->with('success','District Added Successfully.');
         }
 
     }
@@ -163,7 +163,7 @@ class CountryController extends Controller
         if ($data['country']){
             return view('admin.countries.edit',$data);
         }else{
-            return back()->with('error','Country Not Found');
+            return back()->with('error','District Not Found');
         }
     }
 
@@ -184,7 +184,7 @@ class CountryController extends Controller
         }
 
         $country = Country::with('state','city')->where('id',$id)->firstOr(function () {
-            throw new \Exception('This Country is not available now');
+            throw new \Exception('This District is not available now');
         });
         try {
             if ($request->hasFile('image')) {
@@ -204,7 +204,7 @@ class CountryController extends Controller
                 'region'=>$request->region,
                 'subregion'=>$request->subregion,
             ]);
-            return back()->with('success','Country Updated Successfully.');
+            return back()->with('success','District Updated Successfully.');
         }catch (\Exception $e){
             return back()->with('error', $e->getMessage());
         }
@@ -214,7 +214,7 @@ class CountryController extends Controller
         DB::beginTransaction();
         try {
             $country = Country::with('state','city')->where('id',$id)->firstOr(function () {
-                throw new \Exception('This Country is not available now');
+                throw new \Exception('This District is not available now');
             });
             $countryState = $country->state->where('country_id',$id)->all();
             $countryCity = $country->city->where('country_id',$id)->all();
@@ -232,7 +232,7 @@ class CountryController extends Controller
             $this->fileDelete($country->image_driver, $country->image);
             $country->delete();
             DB::commit();
-            return back()->with('success','Country Deleted Successfully.');
+            return back()->with('success','District Deleted Successfully.');
         }catch (\Exception $e){
             DB::rollBack();
             return back()->with('error', $e->getMessage());
@@ -242,7 +242,7 @@ class CountryController extends Controller
     public function deleteMultiple(Request $request)
     {
         if ($request->strIds == null) {
-            session()->flash('error', 'You do not select any Country.');
+            session()->flash('error', 'You do not select any District.');
             return response()->json(['error' => 1]);
         } else {
             DB::transaction(function () use ($request) {
@@ -254,7 +254,7 @@ class CountryController extends Controller
                 }
                 Country::whereIn('id', $request->strIds)->delete();
             });
-            session()->flash('success', 'Selected Data deleted successfully');
+            session()->flash('success', 'Selected data deleted successfully');
             return response()->json(['success' => 1]);
         }
     }
@@ -350,7 +350,7 @@ class CountryController extends Controller
         if ($data['country']){
             return view('admin.countries.state.add',$data);
         }else{
-            return back()->with('error','Country Not Found');
+            return back()->with('error','District Not Found');
         }
     }
     public function countryStateStore(Request $request){
@@ -410,7 +410,7 @@ class CountryController extends Controller
     {
         try {
             $State = CountryStates::with('cities')->where('id',$state)->firstOr(function () {
-                throw new \Exception('This Country is not available now');
+                throw new \Exception('This District is not available now');
             });
             $stateCity = $State->cities->where('state_id',$state)->all();
             if ($stateCity){
@@ -429,7 +429,7 @@ class CountryController extends Controller
     public function deleteMultipleState(Request $request)
     {
         if ($request->strIds == null) {
-            session()->flash('error', 'You do not select any Country.');
+            session()->flash('error', 'You do not select any District.');
             return response()->json(['error' => 1]);
         } else {
             DB::transaction(function () use ($request) {
@@ -439,7 +439,7 @@ class CountryController extends Controller
                 }
                 CountryStates::whereIn('id', $request->strIds)->delete();
             });
-            session()->flash('success', 'Selected Data deleted successfully');
+            session()->flash('success', 'Selected data deleted successfully');
             return response()->json(['success' => 1]);
         }
     }
@@ -545,7 +545,7 @@ class CountryController extends Controller
         if ($data['country'] && $data['state']){
             return view('admin.countries.city.add',$data);
         }else{
-            return back()->with('error','Country or State Not Found');
+            return back()->with('error','District or State Not Found');
         }
     }
 
@@ -614,7 +614,7 @@ class CountryController extends Controller
     {
         try {
             $city = CountryCities::where('country_id',$country)->where('state_id',$state)->where('id',$city)->firstOr(function () {
-                throw new \Exception('This Country is not available now');
+                throw new \Exception('This District is not available now');
             });
             $city->delete();
             return back()->with('success','City Deleted Successfully.');
@@ -626,13 +626,13 @@ class CountryController extends Controller
     public function deleteMultipleStateCity(Request $request)
     {
         if ($request->strIds == null) {
-            session()->flash('error', 'You do not select any Country.');
+            session()->flash('error', 'You do not select any District.');
             return response()->json(['error' => 1]);
         } else {
             DB::transaction(function () use ($request) {
                 CountryCities::whereIn('id', $request->strIds)->delete();
             });
-            session()->flash('success', 'Selected Data deleted successfully');
+            session()->flash('success', 'Selected data deleted successfully');
             return response()->json(['success' => 1]);
         }
     }
