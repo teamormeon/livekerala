@@ -159,7 +159,7 @@
                         <div class="nav-item">
                             <a class="nav-link {{ menuActive(['admin.all.country','admin.country.add','admin.country.edit','admin.country.all.state','admin.country.add.state','admin.country.state.edit','admin.country.state.all.city','admin.country.state.add.city','admin.country.state.city.edit']) }}"
                                href="{{ route('admin.all.country') }}"><i
-                                    class="fas fa-flag nav-icon"></i><span class="nav-link-title">@lang("Countries")</span></a>
+                                    class="fas fa-flag nav-icon"></i><span class="nav-link-title">@lang("Districts")</span></a>
                         </div>
                     @endif
 
@@ -640,7 +640,3 @@
         });
     </script>
 @endpush
-
-
-
-
