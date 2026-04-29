@@ -59,7 +59,7 @@
                                                 <select class="js-example-basic-single form-control" name="location"
                                                         autocomplete="off">
                                                     <option value="all"
-                                                            @if(request()->location == 'all') selected @endif>@lang('All Country')</option>
+                                                            @if(request()->location == 'all') selected @endif>@lang('All Districts')</option>
                                                     @foreach($hero['all_places'] as $place)
                                                         @if($place!=null)
                                                             <option value="{{ $place->id }}"
@@ -78,7 +78,7 @@
                                                 <select class="js-example-basic-single form-control" name="city"
                                                         autocomplete="off">
                                                     <option value="all"
-                                                            @if(request()->city == 'all') selected @endif>@lang('All City')</option>
+                                                            @if(request()->city == 'all') selected @endif>@lang('All Cities')</option>
                                                     @foreach($hero['uniqueCities'] as $city)
                                                         @if($city!=null)
                                                             <option value="{{ $city->id }}"
