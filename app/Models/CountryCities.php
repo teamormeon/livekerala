@@ -20,6 +20,6 @@ class CountryCities extends Model
 
     public function getAddress()
     {
-        return $this->name . ', ' . $this->state->name . ', ' . $this->state->country->name;
+        return $this->name . ', ' . optional($this->country)->name;
     }
 }
