@@ -75,7 +75,7 @@
                                             <select
                                                 class="js-select place_id form-select @error('country_id') is-invalid @enderror"
                                                 autocomplete="off" name="country_id" id="country_id">
-                                                <option selected disabled>@lang('Select Country')</option>
+                                                <option selected disabled>@lang('Select District')</option>
                                                 @foreach($all_places as $item)
                                                     <option value="{{ $item->id }}" data-name="{{ $item->name }}"
                                                             data-code="{{ $item->iso2 }}"
@@ -95,7 +95,7 @@
                                             <select
                                                 class="js-select place_id form-select @error('state_id') is-invalid @enderror"
                                                 autocomplete="off" name="state_id" id="state_id">
-                                                <option selected disabled>@lang('Select State')</option>
+                                                <option selected disabled>@lang('Select Local Area')</option>
                                             </select>
                                             @error('state_id')
                                             <span class="invalid-feedback">{{ $message }}</span>
@@ -528,7 +528,7 @@
                 },
                 dataType: 'json',
                 success: function (result) {
-                    $('#state_id').html('<option value="">Select State</option>');
+                    $('#state_id').html('<option value="">{{ __('Select Local Area') }}</option>');
                     $.each(result.states, function (key, value) {
                         const selected = selectedStateId == value.id ? 'selected' : '';
                         $("#state_id").append('<option value="' + value.id + '" ' + selected + '>' + value.name + '</option>');
@@ -549,7 +549,7 @@
                 },
                 dataType: 'json',
                 success: function (res) {
-                    $('#city_id').html('<option value="">Select City</option>');
+                    $('#city_id').html('<option value="">{{ __('Select City') }}</option>');
                     $.each(res.cities, function (key, value) {
                         $('#address-search').attr('data-lat', value.latitude);
                         $('#address-search').attr('data-long', value.longitude);
