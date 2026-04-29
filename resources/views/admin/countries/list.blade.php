@@ -1,16 +1,16 @@
 @extends('admin.layouts.app')
-@section('page_title',__('Country List'))
+@section('page_title',__('District List'))
 @section('content')
     <div class="content container-fluid">
         <div class="page-header">
             <div class="row align-items-end">
                 <div class="col-sm mb-2 mb-sm-0">
-                    <h1 class="page-header-title">@lang("Country List")</h1>
+                    <h1 class="page-header-title">@lang("District List")</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb breadcrumb-no-gutter">
                             <li class="breadcrumb-item"><a class="breadcrumb-link" href="{{ route('admin.dashboard') }}">@lang("Dashboard")</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">@lang("Countries")</li>
+                            <li class="breadcrumb-item active" aria-current="page">@lang("Districts")</li>
                         </ol>
                     </nav>
                 </div>
@@ -20,7 +20,7 @@
             <div class="col-sm-6 col-lg-4 mb-3 mb-lg-5">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h6 class="card-subtitle mb-2">@lang("Total Country")</h6>
+                        <h6 class="card-subtitle mb-2">@lang("Total District")</h6>
                         <div class="row align-items-center gx-2">
                             <div class="col">
                                 <span class="js-counter display-4 text-dark">{{ $totalCountry }}</span>
@@ -34,7 +34,7 @@
             <div class="col-sm-6 col-lg-4 mb-3 mb-lg-5">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h6 class="card-subtitle mb-2">@lang("Total Active Country")</h6>
+                        <h6 class="card-subtitle mb-2">@lang("Total Active District")</h6>
                         <div class="row align-items-center gx-2">
                             <div class="col">
                                 <span class="js-counter display-4 text-dark">{{ $totalActiveCountry }}</span>
@@ -59,7 +59,7 @@
             <div class="col-sm-6 col-lg-4 mb-3 mb-lg-5">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h6 class="card-subtitle mb-2">@lang("Total Inactive Country")</h6>
+                        <h6 class="card-subtitle mb-2">@lang("Total Inactive District")</h6>
                         <div class="row align-items-center gx-2">
                             <div class="col">
                                 <span class="js-counter display-4 text-dark">{{ $totalInactiveCountry }}</span>
@@ -92,8 +92,8 @@
                                 </div>
                                 <input type="search" id="datatableSearch"
                                        class="search form-control form-control-sm"
-                                       placeholder="@lang('Search country')"
-                                       aria-label="@lang('Search country')"
+                                       placeholder="@lang('Search district')"
+                                       aria-label="@lang('Search district')"
                                        autocomplete="off">
                                 <a class="input-group-append input-group-text" href="javascript:void(0)">
                                     <i id="clearSearchResultsIcon" class="bi-x d-none"></i>
@@ -116,7 +116,7 @@
                             </div>
                             <div>
                                 <a href="{{ route('admin.country.add') }}" class="btn btn-primary btn-sm w-100">
-                                    @lang('Add Country')
+                                    @lang('Add District')
                                 </a>
                             </div>
                         </div>
@@ -151,8 +151,8 @@
                                         <label class="form-check-label" for="datatableCheckAll"></label>
                                     </div>
                                 </th>
-                                <th scope="col">@lang('Country Name')</th>
-                                <th scope="col">@lang('Country Short Name')</th>
+                                <th scope="col">@lang('District Name')</th>
+                                <th scope="col">@lang('District Short Name')</th>
                                 <th scope="col">@lang('Status')</th>
                                 <th scope="col">@lang('Action')</th>
                             </tr>
@@ -211,7 +211,7 @@
                 <form action="" method="post">
                     @csrf
                     <div class="modal-body">
-                        @lang('Do you want to delete all selected country data?')
+                        @lang('Do you want to delete all selected district data?')
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-bs-dismiss="modal">@lang('Close')</button>
@@ -324,4 +324,3 @@
 
     </script>
 @endpush
-
