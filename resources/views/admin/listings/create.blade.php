@@ -124,7 +124,7 @@
                                     <div class="col-md-6">
                                         <label class="form-label">@lang('Permalink')</label>
                                         <div class="input-group">
-                                            <span class="input-group-text">{{ url('/listing') }}/</span>
+                                            <span class="input-group-text">{{ url('/dir') }}/</span>
                                             <input type="text" class="form-control set-slug @error('slug') is-invalid @enderror" name="slug"
                                                    value="{{ old('slug') }}" placeholder="@lang('Custom slug (optional)')">
                                             <div class="invalid-feedback">
