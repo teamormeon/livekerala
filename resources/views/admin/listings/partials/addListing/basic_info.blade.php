@@ -79,7 +79,7 @@
             <div class="col-md-6">
                 <select class="js-select form-control" name="country_id" id="country_id"
                         data-categories="{{ $purchase_package_infos->no_of_categories_per_listing }}">
-                    <option selected disabled> @lang('Select Country')</option>
+                    <option selected disabled>@lang('Select District')</option>
                     @foreach ($all_places as $item)
                         <option value="{{ $item->id }}"
                                 data-name="{{ $item->name }}"
@@ -92,7 +92,7 @@
             </div>
             <div class="col-md-6">
                 <select class="js-select form-control" name="state_id" id="state_id">
-                    <option selected disabled> @lang('state')</option>
+                    <option selected disabled>@lang('Select Local Area')</option>
                 </select>
                 <div class="invalid-feedback">
                     @error('state_id') @lang($message) @enderror
@@ -100,7 +100,7 @@
             </div>
             <div class="col-md-6">
                 <select class="js-select form-control" name="city_id" id="city_id">
-                    <option selected disabled> @lang('City')</option>
+                    <option selected disabled>@lang('Select City')</option>
                 </select>
                 <div class="invalid-feedback">
                     @error('city_id') @lang($message) @enderror
@@ -532,12 +532,12 @@
                 },
                 dataType: 'json',
                 success: function (result) {
-                    $('#state_id').html('<option value="">-- Select State --</option>');
+                    $('#state_id').html('<option value="">-- {{ __('Select Local Area') }} --</option>');
                     $.each(result.states, function (key, value) {
                         $("#state_id").append('<option value="' + value
                             .id + '">' + value.name + '</option>');
                     });
-                    $('#city_id').html('<option value="">-- Select City --</option>');
+                    $('#city_id').html('<option value="">-- {{ __('Select City') }} --</option>');
                 }
             });
         });
@@ -555,7 +555,7 @@
                 },
                 dataType: 'json',
                 success: function (res) {
-                    $('#city_id').html('<option value="">-- Select City --</option>');
+                    $('#city_id').html('<option value="">-- {{ __('Select City') }} --</option>');
                     $.each(res.cities, function (key, value) {
                         $("#city_id").append('<option value="' + value
                             .id + '">' + value.name + '</option>');
