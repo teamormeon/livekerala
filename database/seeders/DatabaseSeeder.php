@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             ContentDetailsSeeder::class,
             PageDetailsSeeder::class,
             KeralaDistrictSeeder::class,
+            LiveKeralaCategorySeeder::class,
 
         ]);
     }
