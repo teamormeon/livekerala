@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Country;
 use App\Models\CountryCities;
 use App\Models\Listing;
 use App\Models\ListingCategoryDetails;
@@ -61,11 +60,11 @@ class LiveKeralaDirectoryImportService
 
                 DB::beginTransaction();
 
-                $listing = Listing::where('slug', $payload['slug'])->first();
-                if ($listing) {
+                $existingListing = Listing::where('slug', $payload['source_slug'])->first();
+                if ($existingListing) {
                     DB::rollBack();
                     $results['skipped']++;
-                    $results['errors'][] = $url . ' => listing with slug already exists';
+                    $results['errors'][] = $url . ' => listing already imported';
                     continue;
                 }
 
@@ -115,7 +114,9 @@ class LiveKeralaDirectoryImportService
                 DB::commit();
                 $results['imported']++;
             } catch (\Throwable $exception) {
-                DB::rollBack();
+                if (DB::transactionLevel() > 0) {
+                    DB::rollBack();
+                }
                 $results['failed']++;
                 $results['errors'][] = $url . ' => ' . $exception->getMessage();
             }
@@ -203,10 +204,12 @@ class LiveKeralaDirectoryImportService
         }
 
         $description = $description !== '' ? $description : ($address ?: $location ?: $title);
-        $slug = $this->makeUniqueImportSlug($url, $title);
+        $sourceSlug = $this->makeSourceSlug($url, $title);
+        $slug = $this->makeUniqueSlug($sourceSlug);
 
         return [
             'title' => $title,
+            'source_slug' => $sourceSlug,
             'slug' => $slug,
             'category_ids' => $categoryIds,
             'email' => $email,
@@ -534,16 +537,21 @@ class LiveKeralaDirectoryImportService
         return null;
     }
 
-    protected function makeUniqueImportSlug(string $url, string $title): string
+    protected function makeSourceSlug(string $url, string $title): string
     {
         $slug = trim((string) basename(parse_url($url, PHP_URL_PATH) ?: ''), '/');
         $slug = $slug !== '' ? Str::slug($slug) : Str::slug($title);
-        $slug = $slug !== '' ? $slug : 'listing';
-        $candidate = $slug;
+
+        return $slug !== '' ? $slug : 'listing';
+    }
+
+    protected function makeUniqueSlug(string $sourceSlug): string
+    {
+        $candidate = $sourceSlug;
         $suffix = 1;
 
         while (Listing::where('slug', $candidate)->exists()) {
-            $candidate = $slug . '-' . $suffix;
+            $candidate = $sourceSlug . '-' . $suffix;
             $suffix++;
         }
 
