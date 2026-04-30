@@ -63,43 +63,56 @@ class ContentController extends Controller
             return back()->withInput()->withErrors($validate);
         }
 
-        $singleContent = Content::updateOrCreate(['name' => $content, 'theme' => $currentTheme], ['name' => $content, 'type' => 'single']);
+        $singleContent = Content::updateOrCreate(
+            ['name' => $content, 'theme' => $currentTheme, 'type' => 'single'],
+            ['name' => $content, 'theme' => $currentTheme, 'type' => 'single']
+        );
+
+        $mediaData = (array) ($singleContent->media ?? []);
         foreach (config('contents.content_media') as $key => $media) {
-            $old_data = $singleContent->media->{$key} ?? null;
+            $oldData = $singleContent->media->{$key} ?? null;
             if ($request->hasFile($key)) {
                 try {
                     $size = config('contents.' .$currentTheme. '.' . $content . '.single.size.image');
-                    $image = $this->fileUpload($request->$key, config('filelocation.contents.path'), null, $size, 'webp', 80);
+                    $image = $this->fileUpload(
+                        $request->$key,
+                        config('filelocation.contents.path'),
+                        null,
+                        $size,
+                        'webp',
+                        80,
+                        $oldData->path ?? null,
+                        $oldData->driver ?? 'local'
+                    );
                     $mediaData[$key] = $image;
                 } catch (\Exception $exp) {
                     return back()->with('error', 'Image could not be uploaded.');
                 }
             } elseif ($request->has($key)) {
                 $mediaData[$key] = $inputData[$key][$language];
-            } elseif (isset($old_data)) {
-                $mediaData[$key] = $old_data;
+            } elseif (isset($oldData)) {
+                $mediaData[$key] = $oldData;
             }
         }
 
-        if (isset($mediaData)) {
+        if (!empty($mediaData)) {
             $singleContent->media = $mediaData;
             $singleContent->save();
         }
 
+        $description = [];
         $field_name = array_diff_key(config('contents.' .$currentTheme. '.' . $content . '.single.field_name'), config("contents.content_media"));
         foreach ($field_name as $name => $type) {
-            $description[$name] = $inputData[$name][$language];
+            $description[$name] = $inputData[$name][$language] ?? null;
         }
 
-        if ($language != 0) {
-            $contentDetails = ContentDetails::updateOrCreate(
-                ['content_id' => $singleContent->id, 'language_id' => $language],
-                ['content_id' => $singleContent->id, 'language_id' => $language, 'description' => $description ?? null]
-            );
-        }
+        $contentDetails = ContentDetails::updateOrCreate(
+            ['content_id' => $singleContent->id, 'language_id' => $language],
+            ['content_id' => $singleContent->id, 'language_id' => $language, 'description' => $description ?: null]
+        );
 
         if (!$contentDetails) {
-            return back()->with('Something went wrong, Please try again.');
+            return back()->with('error', 'Something went wrong. Please try again.');
         }
         return back()->with('success', 'Content created successfully.');
     }
@@ -134,41 +147,50 @@ class ContentController extends Controller
 
         $multipleContent = Content::create(['name' => $content, 'theme' => $currentTheme, 'type' => 'multiple']);
 
+        $mediaData = [];
         foreach (config('contents.content_media') as $key => $media) {
-            $old_data = $multipleContent->media->{$key} ?? null;
+            $oldData = $multipleContent->media->{$key} ?? null;
 
             if ($request->hasFile($key)) {
                 try {
                     $size = config('contents.' .$currentTheme. '.' . $content . '.multiple.size.image');
-                    $image = $this->fileUpload($request->$key, config('filelocation.contents.path'), null, $size, 'webp', 99);
+                    $image = $this->fileUpload(
+                        $request->$key,
+                        config('filelocation.contents.path'),
+                        null,
+                        $size,
+                        'webp',
+                        99,
+                        $oldData->path ?? null,
+                        $oldData->driver ?? 'local'
+                    );
                     $mediaData[$key] = $image;
                 } catch (\Exception $exp) {
-                    return back()->with('alert', 'Image could not be uploaded.');
+                    return back()->with('error', 'Image could not be uploaded.');
                 }
             } elseif ($request->has($key)) {
                 $mediaData[$key] = $inputData[$key][$language];
-            } elseif (isset($old_data)) {
-                $mediaData[$key] = $old_data;
+            } elseif (isset($oldData)) {
+                $mediaData[$key] = $oldData;
             }
         }
 
-        if (isset($mediaData)) {
+        if (!empty($mediaData)) {
             $multipleContent->media = $mediaData;
             $multipleContent->save();
         }
 
+        $description = [];
         $field_name = array_diff_key(config('contents.' .$currentTheme. '.' . $content . '.multiple.field_name'), config("contents.content_media"));
         foreach ($field_name as $name => $type) {
-            $description[$name] = $inputData[$name][$language];
+            $description[$name] = $inputData[$name][$language] ?? null;
         }
 
-        if ($language != 0) {
-            $contentDetails = ContentDetails::create([
-                'content_id' => $multipleContent->id,
-                'language_id' => $language,
-                'description' => $description ?? null
-            ]);
-        }
+        $contentDetails = ContentDetails::create([
+            'content_id' => $multipleContent->id,
+            'language_id' => $language,
+            'description' => $description ?: null
+        ]);
 
         if (!$contentDetails) {
             throw new \Exception("Something went wrong, Please try again");
@@ -212,40 +234,49 @@ class ContentController extends Controller
         }
 
         $multipleContent = Content::findOrFail($id);
+        $mediaData = (array) ($multipleContent->media ?? []);
         foreach (config('contents.content_media') as $key => $media) {
-            $old_data = $multipleContent->media->{$key} ?? null;
+            $oldData = $multipleContent->media->{$key} ?? null;
             if ($request->hasFile($key)) {
                 try {
                     $size = config('contents.' .$currentTheme. '.' . $content . '.multiple.size.image');
-                    $image = $this->fileUpload($request->$key, config('filelocation.contents.path'), null, $size, 'webp', 99, @$multipleContent->media->image->path, @$multipleContent->media->image->driver);
+                    $image = $this->fileUpload(
+                        $request->$key,
+                        config('filelocation.contents.path'),
+                        null,
+                        $size,
+                        'webp',
+                        99,
+                        $oldData->path ?? null,
+                        $oldData->driver ?? 'local'
+                    );
                     $mediaData[$key] = $image;
                 } catch (\Exception $exp) {
-                    return back()->with('alert', 'Image could not be uploaded.');
+                    return back()->with('error', 'Image could not be uploaded.');
                 }
             } elseif ($request->has($key)) {
                 $mediaData[$key] = $inputData[$key][$language];
-            } elseif (isset($old_data)) {
-                $mediaData[$key] = $old_data;
+            } elseif (isset($oldData)) {
+                $mediaData[$key] = $oldData;
             }
         }
 
-        if (isset($mediaData)) {
+        if (!empty($mediaData)) {
             $multipleContent->media = $mediaData;
             $multipleContent->save();
         }
 
+        $description = [];
         $field_name = array_diff_key(config('contents.' .$currentTheme. '.' . $content . '.multiple.field_name'), config("contents.content_media"));
 
         foreach ($field_name as $name => $type) {
-            $description[$name] = $inputData[$name][$language];
+            $description[$name] = $inputData[$name][$language] ?? null;
         }
 
-        if ($language != 0) {
-            $contentDetails = ContentDetails::updateOrCreate(
-                ['content_id' => $id, 'language_id' => $language],
-                ['content_id' => $id, 'language_id' => $language, 'description' => $description ?? null]
-            );
-        }
+        $contentDetails = ContentDetails::updateOrCreate(
+            ['content_id' => $id, 'language_id' => $language],
+            ['content_id' => $id, 'language_id' => $language, 'description' => $description ?: null]
+        );
 
         if (!$contentDetails) {
             throw new \Exception("Something went wrong, Please try again");
