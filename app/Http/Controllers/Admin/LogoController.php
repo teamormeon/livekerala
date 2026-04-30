@@ -18,11 +18,11 @@ class LogoController extends Controller
 
     public function logoUpdate(Request $request)
     {
-
         $request->validate([
-            'logo' => 'sometimes|required|mimes:jpg,png,jpeg|max:2048',
-            'favicon' => 'sometimes|required|mimes:jpg,png,jpeg|max:2048',
-            'admin_logo' => 'sometimes|required|mimes:jpg,png,jpeg|max:2048',
+            'logo' => 'sometimes|required|mimes:jpg,png,jpeg,svg|max:2048',
+            'favicon' => 'sometimes|required|mimes:jpg,png,jpeg,svg|max:2048',
+            'admin_logo' => 'sometimes|required|mimes:jpg,png,jpeg,svg|max:2048',
+            'admin_dark_mode_logo' => 'sometimes|required|mimes:jpg,png,jpeg,svg|max:2048',
         ]);
 
         $basicControl = basicControl();
@@ -70,14 +70,13 @@ class LogoController extends Controller
                     $basicControl->admin_dark_mode_logo_driver = $image['driver'];
                 }
             } catch (\Exception $exp) {
-                return back()->with('error', 'Admin Logo could not be uploaded.');
+                return back()->with('error', 'Admin dark mode logo could not be uploaded.');
             }
         }
 
         $basicControl->save();
 
-        return back()->with('success', 'Logo, favicon and breadcrumb has been updated.');
-
+        return back()->with('success', 'Logo, favicon and admin logos have been updated.');
     }
 
 }
