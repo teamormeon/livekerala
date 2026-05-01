@@ -7,6 +7,7 @@ use App\Models\Content;
 use App\Models\ContentDetails;
 use App\Models\Language;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\Upload;
 
@@ -114,6 +115,8 @@ class ContentController extends Controller
         if (!$contentDetails) {
             return back()->with('error', 'Something went wrong. Please try again.');
         }
+
+        $this->clearFrontendCaches();
         return back()->with('success', 'Content created successfully.');
     }
 
@@ -195,6 +198,8 @@ class ContentController extends Controller
         if (!$contentDetails) {
             throw new \Exception("Something went wrong, Please try again");
         }
+
+        $this->clearFrontendCaches();
         return back()->with('success', 'Created Successfully');
     }
 
@@ -281,6 +286,8 @@ class ContentController extends Controller
         if (!$contentDetails) {
             throw new \Exception("Something went wrong, Please try again");
         }
+
+        $this->clearFrontendCaches();
         return back()->with('success', 'Created Successfully');
     }
 
@@ -297,10 +304,17 @@ class ContentController extends Controller
             foreach ($contentDetails as $detail) {
                 $detail->delete();
             }
+
+            $this->clearFrontendCaches();
             return back()->with('success', 'Content has been deleted');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
 
+    }
+
+    protected function clearFrontendCaches(): void
+    {
+        Artisan::call('optimize:clear');
     }
 }
