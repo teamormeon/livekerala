@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\Upload;
+use Illuminate\Support\Facades\Artisan;
 
 class LogoController extends Controller
 {
@@ -75,6 +76,7 @@ class LogoController extends Controller
         }
 
         $basicControl->save();
+        Artisan::call('optimize:clear');
 
         return back()->with('success', 'Logo, favicon and admin logos have been updated.');
     }
