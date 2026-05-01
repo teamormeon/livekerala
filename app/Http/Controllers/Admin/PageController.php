@@ -8,8 +8,9 @@ use App\Models\ManageMenu;
 use App\Models\Page;
 use App\Rules\AlphaDashWithoutSlashes;
 use App\Traits\Upload;
-use Http\Client\Exception;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -79,7 +80,7 @@ class PageController extends Controller
 
 
         if ($request->hasFile('breadcrumb_image')) {
-            $image = $this->fileUpload($request->breadcrumb_image, config('filelocation.pageImage.path'), null, null, 'webp', 99);
+            $image = $this->fileUpload($request->breadcrumb_image, config('filelocation.pagesImage.path'), null, null, 'webp', 99);
             if ($image) {
                 $breadCrumbImage = $image['path'];
                 $breadCrumbImageDriver = $image['driver'];
@@ -111,6 +112,7 @@ class PageController extends Controller
                 'sections' => $sections,
             ]);
 
+            $this->clearFrontendCaches();
             return redirect()->route('admin.page.index', $theme)->with('success', 'Page Saved Successfully');
         } catch (Exception $e) {
             return back()->with('error', $e->getMessage());
@@ -134,12 +136,12 @@ class PageController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'min:1', 'max:100',
-                function ($attribute, $value, $fail) use ($request, $id,$theme) {  // Pass the current page_id
+                function ($attribute, $value, $fail) use ($request, $id,$theme) {
                     $exists = DB::table('page_details')
                         ->join('pages', 'pages.id', '=', 'page_details.page_id')
                         ->where('pages.template_name', $theme)
                         ->where('page_details.name', $value)
-                        ->where('page_details.page_id', '!=', $id)  // Exclude current record by its page_id
+                        ->where('page_details.page_id', '!=', $id)
                         ->exists();
 
                     if ($exists) {
@@ -171,13 +173,11 @@ class PageController extends Controller
             $menuHeader->menu_items = $nestedArr;
             $menuHeader->save();
 
-
             $menuFooter = ManageMenu::where('menu_section', 'footer')->first();
-
             $nestedArr2 = $menuFooter->menu_items;
             removeValue($nestedArr2, strtolower($menu));
-            $menuHeader->menu_items = $nestedArr2;
-            $menuHeader->save();
+            $menuFooter->menu_items = $nestedArr2;
+            $menuFooter->save();
         }
 
         try {
@@ -214,11 +214,13 @@ class PageController extends Controller
                 ]
             );
 
+            $this->clearFrontendCaches();
             return redirect()->route('admin.page.index', $theme)->with('success', 'Page Updated Successfully');
 
         } catch (Exception $e) {
-            if (isset($breadCrumbImage, $breadCrumbImageDriver))
+            if (isset($breadCrumbImage, $breadCrumbImageDriver)) {
                 $this->fileDelete($breadCrumbImageDriver, $breadCrumbImage);
+            }
             return back()->with('error', $e->getMessage());
         }
 
@@ -249,6 +251,7 @@ class PageController extends Controller
             $this->fileDelete($page->meta_image_driver, $page->meta_image);
             $page->delete();
             $page->details()->delete();
+            $this->clearFrontendCaches();
 
             return back()->with('success', 'Page deleted successfully');
 
@@ -308,10 +311,12 @@ class PageController extends Controller
                     "name" => $request->name,
                 ]
             );
+            $this->clearFrontendCaches();
             return redirect()->route('admin.page.index', $theme)->with('success', 'Static Page Updated Successfully');
         } catch (Exception $e) {
-            if (isset($image['path'], $image['driver']))
+            if (isset($image['path'], $image['driver'])) {
                 $this->fileDelete($image['driver'], $image['path']);
+            }
             return back()->with('error', $e->getMessage());
         }
     }
@@ -343,6 +348,7 @@ class PageController extends Controller
         $page->update([
             'slug' => $newSlug
         ]);
+        $this->clearFrontendCaches();
 
         return response([
             'success' => true,
@@ -353,16 +359,12 @@ class PageController extends Controller
 
     public function pageSEO($id)
     {
-//        try {
         $data['pageSEO'] = Page::where('id', $id)
             ->select('id', 'name', 'page_title', 'meta_title', 'meta_keywords', 'meta_description', 'og_description', 'meta_robots', 'meta_image', 'meta_image_driver')
             ->firstOr(function () {
                 throw new \Exception('Page is not available.');
             });
         return view("admin.frontend_management.page.seo", $data);
-//        } catch (\Exception $exception) {
-//            return back()->with('error', $exception->getMessage());
-//        }
     }
 
     public function pageSeoUpdate(Request $request, $id)
@@ -406,6 +408,7 @@ class PageController extends Controller
                 'meta_image' => $image['path'] ?? $pageSEO->meta_image,
                 'meta_image_driver' => $image['driver'] ?? $pageSEO->meta_image_driver,
             ]);
+            $this->clearFrontendCaches();
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -414,4 +417,8 @@ class PageController extends Controller
 
     }
 
+    protected function clearFrontendCaches(): void
+    {
+        Artisan::call('optimize:clear');
+    }
 }
