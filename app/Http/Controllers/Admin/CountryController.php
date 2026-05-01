@@ -10,6 +10,7 @@ use App\Traits\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class CountryController extends Controller
@@ -557,14 +558,20 @@ class CountryController extends Controller
             'longitude' => 'required',
             'status' => 'required',
         ]);
+        $validator->after(function ($validator) use ($request) {
+            if ($this->cityDuplicateExists($request->country_id, $request->state_id, $request->name)) {
+                $validator->errors()->add('name', 'This city already exists for the selected district.');
+            }
+        });
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }else{
+            $normalizedName = $this->normalizeCityName($request->name);
             $city = new CountryCities();
             $city->country_id = $request->country_id;
             $city->state_id = $request->state_id;
             $city->country_code = $request->country_code;
-            $city->name = $request->name;
+            $city->name = $normalizedName;
             $city->latitude = $request->latitude;
             $city->longitude = $request->longitude;
             $city->status = $request->status;
@@ -591,6 +598,11 @@ class CountryController extends Controller
             'longitude' => 'required',
             'status' => 'required',
         ]);
+        $validator->after(function ($validator) use ($request, $country, $state, $city) {
+            if ($this->cityDuplicateExists($country, $state, $request->name, $city)) {
+                $validator->errors()->add('name', 'This city already exists for the selected district.');
+            }
+        });
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
@@ -598,8 +610,9 @@ class CountryController extends Controller
             throw new \Exception('This City is not available now');
         });
         try {
+            $normalizedName = $this->normalizeCityName($request->name);
             $city->update([
-                'name'=>$request->name,
+                'name'=>$normalizedName,
                 'latitude'=>$request->latitude,
                 'longitude'=>$request->longitude,
                 'status'=>$request->status,
@@ -635,5 +648,31 @@ class CountryController extends Controller
             session()->flash('success', 'Selected data deleted successfully');
             return response()->json(['success' => 1]);
         }
+    }
+
+    protected function cityDuplicateExists($countryId, $stateId, ?string $name, ?int $ignoreCityId = null): bool
+    {
+        $normalizedName = $this->normalizeCityName($name);
+
+        if ($normalizedName === '') {
+            return false;
+        }
+
+        return CountryCities::query()
+            ->where('country_id', $countryId)
+            ->where('state_id', $stateId)
+            ->when($ignoreCityId, fn($query) => $query->where('id', '!=', $ignoreCityId))
+            ->get(['id', 'name'])
+            ->contains(function ($city) use ($normalizedName) {
+                return $this->normalizeCityName($city->name) === $normalizedName;
+            });
+    }
+
+    protected function normalizeCityName(?string $name): string
+    {
+        return Str::of((string) $name)
+            ->squish()
+            ->trim()
+            ->toString();
     }
 }
