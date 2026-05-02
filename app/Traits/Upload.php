@@ -22,10 +22,7 @@ trait Upload
     public function fileUpload($file, $location, $fileName = null, $size = null, $encodedFormat = null, $encodedQuality = 90, $oldFileName = null, $oldDriver = 'local')
     {
         $activeDisk = config('filesystems.default');
-
-        if (!empty($oldFileName) && Storage::disk($oldDriver)->exists($oldFileName)) {
-            Storage::disk($oldDriver)->delete($oldFileName);
-        }
+        $path = null;
 
         if (!is_string($file)) {
             $mimeType = (string) $file->getMimeType();
@@ -44,6 +41,10 @@ trait Upload
                 Storage::disk($activeDisk)->put($location, $file);
                 $path = $location;
             }
+        }
+
+        if (!empty($path) && !empty($oldFileName) && Storage::disk($oldDriver)->exists($oldFileName)) {
+            Storage::disk($oldDriver)->delete($oldFileName);
         }
 
         return [

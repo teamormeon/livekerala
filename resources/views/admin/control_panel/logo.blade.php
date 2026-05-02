@@ -54,7 +54,7 @@
                                                       "textTarget": "#logoImg",
                                                       "mode": "image",
                                                       "targetAttr": "src",
-                                                      "allowTypes": [".png", ".jpeg", ".jpg", ".svg"]
+                                                      "allowTypes": [".png", ".jpeg", ".jpg", ".svg", ".webp"]
                                                    }'>
                                         </label>
                                         @error("logo")
@@ -81,7 +81,7 @@
                                                       "textTarget": "#faviconImg",
                                                       "mode": "image",
                                                       "targetAttr": "src",
-                                                      "allowTypes": [".png", ".jpeg", ".jpg", ".svg"]
+                                                      "allowTypes": [".png", ".jpeg", ".jpg", ".svg", ".webp"]
                                                    }'>
                                         </label>
                                         @error("favicon")
@@ -110,7 +110,7 @@
                                                       "textTarget": "#adminLogoImg",
                                                       "mode": "image",
                                                       "targetAttr": "src",
-                                                      "allowTypes": [".png", ".jpeg", ".jpg", ".svg"]
+                                                      "allowTypes": [".png", ".jpeg", ".jpg", ".svg", ".webp"]
                                                    }'>
                                         </label>
                                         @error("admin_logo")
@@ -138,7 +138,7 @@
                                                       "textTarget": "#adminDarkVersionLogo",
                                                       "mode": "image",
                                                       "targetAttr": "src",
-                                                      "allowTypes": [".png", ".jpeg", ".jpg", ".svg"]
+                                                      "allowTypes": [".png", ".jpeg", ".jpg", ".svg", ".webp"]
                                                    }'>
                                         </label>
                                         @error("admin_dark_mode_logo")
@@ -189,5 +189,4 @@
         })
     </script>
 @endpush
-
 
