@@ -827,6 +827,7 @@ class ListingController extends Controller
             }
             session()->flash('success', 'Listing has been Deleted');
             return response()->json(['success' => 1]);
+        }
     }
 
 
