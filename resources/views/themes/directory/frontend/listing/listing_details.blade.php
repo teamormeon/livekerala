@@ -193,9 +193,6 @@
                     <h3>@lang($single_listing_details->title)</h3>
                     <p>@lang('Category') : @lang($single_listing_details->getCategoriesName()) </p>
                     @if($single_listing_details->address)
-                        <p class=" mb-1 contact-item"><i class="fa-regular fa-phone"></i>
-                            @lang($single_listing_details->phone)
-                        </p>
                         <p class=" mb-1 contact-item"><i class="fa-regular fa-envelope"></i>
                             @lang($single_listing_details->email)
                         </p>
@@ -793,11 +790,6 @@
                     <div class="sidebar-widget-area">
                         <h5 class="title">@lang('Contact Seller')</h5>
                         <div class="contact-box">
-                            @if(optional($single_listing_details->get_user)->phone)
-                                <p class="contact-item mb-0"><i
-                                        class="fa-regular fa-phone"></i> {{ optional($single_listing_details->get_user)->phone }}
-                                </p>
-                            @endif
                             @if(optional($single_listing_details->get_user)->email)
                                 <p class="contact-item mb-0"><i
                                         class="fa-regular fa-envelope"></i>{{ optional($single_listing_details->get_user)->email }}
@@ -991,9 +983,6 @@
                                                 , @lang(optional(optional($listing->get_place)->details)->place)
                                             </p>
 
-                                            <p class="contact-item"><i
-                                                    class="fa-regular fa-phone"></i> {{ $listing->phone }}
-                                            </p>
                                             <a href="{{ route('profile', optional($listing->get_user)->username) }}"
                                                class="contact-item"><i class="fa-regular fa-user"></i>
                                                 @lang(optional($listing->get_user)->firstname) @lang(optional($listing->get_user)->lastname)
@@ -1417,4 +1406,3 @@
 
     </script>
 @endpush
-

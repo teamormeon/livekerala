@@ -50,9 +50,6 @@
     <h4 class="title">@lang($single_listing_details->title)</h4>
     <p class="p-0">@lang('Category') : @lang($single_listing_details->getCategoriesName())</p>
 
-    @if($single_listing_details->phone)
-        <p class="address mb-2"> <i class="far fa-phone-alt me-1"></i><span> @lang($single_listing_details->phone)</span></p>
-    @endif
     @if($single_listing_details->email)
         <p class="address mb-2"> <i class="far fa-envelope me-1"></i><span> @lang($single_listing_details->email)</span></p>
     @endif
@@ -73,5 +70,4 @@
         });
     </script>
 @endpush
-
 

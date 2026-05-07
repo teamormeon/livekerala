@@ -301,8 +301,6 @@
                                                         @lang(optional($listing->get_cities)->getAddress() ?? $listing->address)
                                                     </p>
 
-                                                    <p class="contact-item"><i class="fa-regular fa-phone"></i> {{ $listing->phone }}
-                                                    </p>
                                                     <a href="{{ route('profile', optional($listing->get_user)->username) }}" class="contact-item"><i class="fa-regular fa-user"></i>
                                                         @lang(optional($listing->get_user)->firstname) @lang(optional($listing->get_user)->lastname)
                                                     </a>
@@ -421,4 +419,3 @@
         })
     </script>
 @endpush
-
