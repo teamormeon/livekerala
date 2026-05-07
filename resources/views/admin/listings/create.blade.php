@@ -50,12 +50,10 @@
                             @foreach($packages as $package)
                                 <option value="{{ $package->id }}" {{ (string) old('purchase_package_id', $selectedPackageId) === (string) $package->id ? 'selected' : '' }}>
                                     {{ optional(optional($package->get_package)->details)->title ?? __('Package') }}
-                                    @if($package->no_of_listing !== null)
-                                        - {{ __('Remaining') }}: {{ $package->no_of_listing }}
-                                    @endif
                                 </option>
                             @endforeach
                         </select>
+                        <small class="text-muted d-block mt-1">@lang('Listings created from the admin dashboard do not reduce package listing quota.')</small>
                         <div class="invalid-feedback">
                             @error('purchase_package_id') {{ $message }} @enderror
                         </div>

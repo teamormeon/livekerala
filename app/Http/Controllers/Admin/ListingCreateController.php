@@ -156,10 +156,6 @@ class ListingCreateController extends Controller
                 ->where('status', 1)
                 ->findOrFail($request->purchase_package_id);
 
-            if (!empty($purchasePackage->no_of_listing) && $purchasePackage->no_of_listing <= 0) {
-                return back()->with('error', __('This package has no remaining listing quota.'));
-            }
-
             $user = User::findOrFail($request->user_id);
             $listing = new Listing();
 
@@ -179,6 +175,7 @@ class ListingCreateController extends Controller
 
             $listing->user_id = $user->id;
             $listing->purchase_package_id = $purchasePackage->id;
+            $listing->skip_package_quota = true;
             $listing->title = $request->title;
             $listing->slug = $request->filled('slug') ? $request->slug : $this->generateUniqueSlug($request->title);
             $listing->category_id = array_slice($request->category_id, 0, $numberOfCategoriesPerListing);
@@ -238,7 +235,7 @@ class ListingCreateController extends Controller
                 $this->insertSEO($listing, $request, $purchasePackage->id);
             }
 
-            if ($purchasePackage->no_of_listing != null) {
+            if ($purchasePackage->no_of_listing != null && !$listing->skip_package_quota) {
                 $purchasePackage->update([
                     'no_of_listing' => $purchasePackage->no_of_listing - 1,
                 ]);

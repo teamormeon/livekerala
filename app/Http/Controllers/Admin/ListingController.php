@@ -531,13 +531,7 @@ class ListingController extends Controller
                 session()->flash('error', __('Listing reject reason is required.'));
                 return response()->json(['error' => 1]);
             } else {
-                $purchase_package = PurchasePackage::findOrFail($listing->purchase_package_id);
-                if ($purchase_package->expire_date != null && $purchase_package->expire_date >= Carbon::now()) {
-                    if ($purchase_package->no_of_listing != null){
-                        $purchase_package->no_of_listing += 1;
-                        $purchase_package->save();
-                    }
-                }
+                $this->restorePackageQuota($listing);
                 $listing->status = 2;
                 $listing->rejected_reason = $request->rejectReason;
                 $listing->save();
@@ -588,11 +582,7 @@ class ListingController extends Controller
                             session()->flash('error', "You can't rejected approved listing! You can deactivate `$listing->title` listing if you wish");
                             return response()->json(['error' => 1]);
                         } else {
-                            $purchase_package = PurchasePackage::findOrFail($listing->purchase_package_id);
-                            if ($purchase_package->expire_date != null && $purchase_package->expire_date >= Carbon::now()) {
-                                $purchase_package->no_of_listing += 1;
-                                $purchase_package->save();
-                            }
+                            $this->restorePackageQuota($listing);
 
                             $admin = Auth::user();
                             $msg = [
@@ -689,17 +679,7 @@ class ListingController extends Controller
             $listing = Listing::with(['get_package', 'listingImages', 'get_listing_amenities', 'get_business_hour', 'get_social_info',
                 'get_products', 'listingSeo', 'get_reviews', 'listingAnalytics', 'listingClaims', 'allWishlists', 'productQueries.replies', 'listingViews'])->findOrFail($id);
 
-            if (optional($listing->get_package)->expire_date != null) {
-                $expiry_date = $listing->get_package->expire_date;
-                $current_date = Carbon::now();
-                $no_of_listing = $listing->get_package->no_of_listing;
-
-                if ($current_date <= $expiry_date) {
-                    $increase = $no_of_listing + 1;
-                    $listing->get_package->no_of_listing = $increase;
-                    $listing->get_package->save();
-                }
-            }
+            $this->restorePackageQuota($listing);
 
             foreach ($listing->listingImages as $lisImage) {
                 $this->fileDelete($lisImage->driver, $lisImage->listing_image);
@@ -780,17 +760,7 @@ class ListingController extends Controller
                 $listing = Listing::with(['get_package', 'listingImages', 'get_listing_amenities', 'get_business_hour', 'get_social_info',
                     'get_products', 'listingSeo', 'get_reviews', 'listingAnalytics', 'listingClaims', 'allWishlists', 'productQueries.replies', 'listingViews'])->findOrFail($id);
 
-                if (optional($listing->get_package)->expire_date != null) {
-                    $expiry_date = $listing->get_package->expire_date;
-                    $current_date = Carbon::now();
-                    $no_of_listing = $listing->get_package->no_of_listing;
-
-                    if ($current_date <= $expiry_date) {
-                        $increase = $no_of_listing + 1;
-                        $listing->get_package->no_of_listing = $increase;
-                        $listing->get_package->save();
-                    }
-                }
+                $this->restorePackageQuota($listing);
 
                 foreach ($listing->listingImages as $lisImage) {
                     $this->fileDelete($lisImage->driver, $lisImage->listing_image);
@@ -857,7 +827,6 @@ class ListingController extends Controller
             }
             session()->flash('success', 'Listing has been Deleted');
             return response()->json(['success' => 1]);
-        }
     }
 
 
@@ -1162,6 +1131,26 @@ class ListingController extends Controller
             return back()->with('success', __('Listing Settings Updated!'));
         }catch (\Exception $exception){
             return back()->with('error', $exception->getMessage());
+        }
+    }
+
+    protected function restorePackageQuota(Listing $listing): void
+    {
+        if ($listing->skip_package_quota) {
+            return;
+        }
+
+        $purchasePackage = $listing->relationLoaded('get_package')
+            ? $listing->get_package
+            : PurchasePackage::find($listing->purchase_package_id);
+
+        if (!$purchasePackage || $purchasePackage->no_of_listing === null || $purchasePackage->expire_date === null) {
+            return;
+        }
+
+        if ($purchasePackage->expire_date >= Carbon::now()) {
+            $purchasePackage->no_of_listing += 1;
+            $purchasePackage->save();
         }
     }
 
