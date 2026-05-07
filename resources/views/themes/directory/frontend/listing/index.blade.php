@@ -113,6 +113,11 @@
                                                     <p class="mb-1 contact-item"><i class="fa-regular fa-location-dot"></i>
                                                         @lang($listing->city_id != null && $listing->get_cities ? $listing->get_cities->getAddress() : $listing->address)
                                                     </p>
+                                                    @if($listing->displayPhone)
+                                                        <p class="mb-1 contact-item"><i class="fa-regular fa-phone"></i>
+                                                            {{ $listing->displayPhone }}
+                                                        </p>
+                                                    @endif
                                                     <a href="{{ route('profile', optional($listing->get_user)->username) }}" class="contact-item"><i class="fa-regular fa-user"></i>
                                                         @lang(optional($listing->get_user)->firstname) @lang(optional($listing->get_user)->lastname)
                                                     </a>

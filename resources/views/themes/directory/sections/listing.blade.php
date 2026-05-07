@@ -71,6 +71,9 @@
                                 <p>@lang('Category') : @lang(optional($listing)->getCategoriesName())</p>
                                 <div class="mt-15">
                                     <p class=" mb-1 contact-item"><i class="fa-regular fa-location-dot"></i> @lang($listing->city_id != null ? $listing->get_cities?->getAddress() : $listing->address)</p>
+                                    @if($listing->displayPhone)
+                                        <p class="contact-item"><i class="fa-regular fa-phone"></i> {{ $listing->displayPhone }}</p>
+                                    @endif
                                 </div>
                                 <hr class="cmn-hr2">
                                 <div class="bottom-info">
@@ -150,5 +153,4 @@
         });
     }
 </script>
-
 

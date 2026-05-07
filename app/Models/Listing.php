@@ -14,7 +14,8 @@ class Listing extends Model
     protected $guarded = ['id'];
 
     protected $appends = [
-        'avgRating'
+        'avgRating',
+        'displayPhone',
     ];
 
     protected $casts = [
@@ -86,6 +87,31 @@ class Listing extends Model
     public function getAvgRatingAttribute()
     {
         return $this->get_reviews()->avg('rating');
+    }
+
+    public function getDisplayPhoneAttribute(): ?string
+    {
+        $listingPhone = trim((string) $this->phone);
+        $ownerPhone = trim((string) optional($this->get_user)->phone);
+        $ownerPhoneCode = trim((string) optional($this->get_user)->phone_code);
+        $ownerFullPhone = trim($ownerPhoneCode . ' ' . $ownerPhone);
+
+        if ($listingPhone === '') {
+            return $ownerFullPhone !== '' ? $ownerFullPhone : null;
+        }
+
+        $numericListingPhone = preg_replace('/\D+/', '', $listingPhone);
+        $numericOwnerPhone = preg_replace('/\D+/', '', $ownerPhone);
+        $numericOwnerPhoneCode = preg_replace('/\D+/', '', $ownerPhoneCode);
+
+        if ($numericOwnerPhone !== '' && (
+            strlen($numericListingPhone) <= 4 ||
+            $numericListingPhone === $numericOwnerPhoneCode
+        )) {
+            return $ownerFullPhone !== '' ? $ownerFullPhone : $listingPhone;
+        }
+
+        return $listingPhone;
     }
 
     public function get_package()

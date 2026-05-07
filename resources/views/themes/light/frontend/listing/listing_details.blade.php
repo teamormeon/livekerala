@@ -640,6 +640,12 @@
                             <div class="side-box">
                                 <h5>@lang('Contact Seller')</h5>
                                 <ul>
+                                    @if($single_listing_details->displayPhone)
+                                        <li>
+                                            <i class="far fa-phone-alt" aria-hidden="true"></i>
+                                            <span>{{ $single_listing_details->displayPhone }}</span>
+                                        </li>
+                                    @endif
                                     @if(optional($single_listing_details->get_user)->email)
                                         <li>
                                             <i class="far fa-envelope" aria-hidden="true"></i>
