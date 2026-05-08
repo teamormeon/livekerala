@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -43,7 +44,18 @@ trait Upload
             }
         }
 
-        if (!empty($path) && !empty($oldFileName) && Storage::disk($oldDriver)->exists($oldFileName)) {
+        if (empty($path)) {
+            Log::warning('File upload did not return a stored path.', [
+                'disk' => $activeDisk,
+                'location' => $location,
+                'old_file' => $oldFileName,
+                'old_driver' => $oldDriver,
+            ]);
+
+            return null;
+        }
+
+        if (!empty($oldFileName) && Storage::disk($oldDriver)->exists($oldFileName)) {
             Storage::disk($oldDriver)->delete($oldFileName);
         }
 

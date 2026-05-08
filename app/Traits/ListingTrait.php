@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 trait ListingTrait
 {
@@ -55,12 +56,17 @@ trait ListingTrait
                     $listingImage->listing_id = $listing->id;
                     $listingImage->purchase_package_id = $id;
                     $image = $this->fileUpload($request->listing_image[$i], config('filelocation.listing_images.path'), null,null, 'webp', 99);
-                    if ($image) {
+                    if ($image && !empty($image['path'])) {
                         $listingImage->listing_image = $image['path'];
                         $listingImage->driver = $image['driver'];
+                        $listingImage->save();
                     }
-                    $listingImage->save();
                 } catch (\Exception $exp) {
+                    Log::warning('Listing image upload failed.', [
+                        'listing_id' => $listing->id,
+                        'purchase_package_id' => $id,
+                        'message' => $exp->getMessage(),
+                    ]);
                     continue;
                 }
             }
