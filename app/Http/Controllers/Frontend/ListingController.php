@@ -90,7 +90,14 @@ class ListingController extends Controller
 
 
         $data['all_places'] = Country::select('id', 'name')->where('status', 1)->orderBy('name', 'ASC')->toBase()->get();
-        $data['uniqueCities'] = Listing::with('get_cities')->where('city_id', '!=', null)->get()->pluck('get_cities');
+        $data['uniqueCities'] = Listing::with('get_cities')
+            ->whereNotNull('city_id')
+            ->get()
+            ->pluck('get_cities')
+            ->filter()
+            ->unique('id')
+            ->sortBy('name')
+            ->values();
         $data['all_categories'] = ListingCategory::select('id')->with('details:id,listing_category_id,name')->where('status', 1)->latest()->get();
         $pageSeo = Page::where('template_name', $selectedTheme)->where('slug', 'listings')->first();
         $pageSeo['breadcrumb_image'] = $pageSeo?->breadcrumb_status == 1 ?  getFile($pageSeo->breadcrumb_image_driver, $pageSeo->breadcrumb_image) : null;

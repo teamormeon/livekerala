@@ -148,7 +148,14 @@ class BaseController extends Controller
 
     public function listingCities()
     {
-        $cities = Listing::with('get_cities:id,country_id,state_id,name,latitude,longitude,status')->where('city_id', '!=', null)->get()->pluck('get_cities');
+        $cities = Listing::with('get_cities:id,country_id,state_id,name,latitude,longitude,status')
+            ->whereNotNull('city_id')
+            ->get()
+            ->pluck('get_cities')
+            ->filter()
+            ->unique('id')
+            ->sortBy('name')
+            ->values();
         $info = [
             'status' => '0 = Inactive, 1 = Active',
         ];

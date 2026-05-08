@@ -40,7 +40,14 @@ trait Frontend
                     'single' => $singleContent ? collect($singleContent->description ?? [])->merge($singleContent->content->only('media')) : [],
                     'all_categories' => $listingCategories->sortByDesc('id'),
                     'all_places' => Country::select('id', 'name')->where('status', 1)->orderBy('name', 'ASC')->toBase()->get(),
-                    'uniqueCities' => Listing::with('get_cities')->where('city_id', '!=', null)->get()->pluck('get_cities'),
+                    'uniqueCities' => Listing::with('get_cities')
+                        ->whereNotNull('city_id')
+                        ->get()
+                        ->pluck('get_cities')
+                        ->filter()
+                        ->unique('id')
+                        ->sortBy('name')
+                        ->values(),
                     'highlights_categories' => $listingCategories->random(4),
                 ];
             }elseif ($section == 'listing'){
