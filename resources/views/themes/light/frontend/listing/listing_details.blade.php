@@ -579,42 +579,6 @@
 
                     <div class="col-lg-4">
                         <div class="side-bar">
-                            <div class="side-box">
-                                <h5>@lang('Created By')</h5>
-                                <div class="creator-box">
-                                    <div class="img-box">
-                                        <img
-                                            src="{{ getFile(optional($single_listing_details->get_user)->cover_image_driver, optional($single_listing_details->get_user)->cover_image) }}"
-                                            alt="image" class="img-fluid cover"/>
-                                        <img
-                                            src="{{ getFile(optional($single_listing_details->get_user)->image_driver, optional($single_listing_details->get_user)->image) }}"
-                                            class="img-fluid profile" alt="image"/>
-                                    </div>
-
-                                    <div class="text-box">
-                                        <h5 class="creator-name">
-                                            @lang(optional($single_listing_details->get_user)->firstname) @lang(optional($single_listing_details->get_user)->lastname)
-                                        </h5>
-                                        <span>@lang('Member since') @lang(optional($single_listing_details->get_user)->created_at->format('M Y')) </span>
-                                        <div class="d-flex justify-content-between my-3">
-                                            <span>
-                                                @if($total_listings_an_user['totalListing'] > 1)
-                                                    {{ $total_listings_an_user['totalListing'] }} @lang('Listings')
-                                                @else
-                                                    {{ $total_listings_an_user['totalListing'] }} @lang('Listing')
-                                                @endif
-                                            </span>
-                                            <span>{{ $follower_count['totalFollower'] }} @lang('Followers')</span>
-                                        </div>
-
-                                        <a href="{{ route('profile', optional($single_listing_details->get_user)->username) }}"
-                                           class="btn-custom cursor-pointer">
-                                            @lang('Visit profile')
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
                             @if(optional($single_listing_details->get_package)->is_business_hour != 0 && count($single_listing_details->get_business_hour) > 0)
                                 <div class="side-box">
                                     <h5>@lang('Opening Hours')</h5>
@@ -687,42 +651,6 @@
                                      data-route="{{ route('listing.details', $single_listing_details->slug) }}"></div>
                                 <h5>@lang('Map')</h5>
                                 <div class="sidebar-map" id="map"></div>
-                            </div>
-
-                            <div class="side-box">
-                                <h5>@lang('Send a Message')</h5>
-                                <form action="{{ route('user.send.listing.message', $single_listing_details->id) }}"
-                                      method="post" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="row g-3">
-                                        <div class="input-box col-12">
-                                            <input class="form-control @error('name') is-invalid @enderror" type="text"
-                                                   autocomplete="off" name="name"
-                                                   @if(Auth::check() && Auth::id() != $single_listing_details->user_id)
-                                                       value="@lang(Auth::user()->firstname) @lang(Auth::user()->lastname)"
-                                                   @else
-                                                       placeholder="@lang('Full Name')"
-                                                @endif/>
-                                            <div class="invalid-feedback">
-                                                @error('name') @lang($message) @enderror
-                                            </div>
-                                        </div>
-
-                                        <div class="input-box col-12">
-                                            <textarea class="form-control @error('message') is-invalid @enderror"
-                                                      cols="30" rows="3" autocomplete="off" name="message"
-                                                      placeholder="@lang('Your message')"></textarea>
-                                            <div class="invalid-feedback">
-                                                @error('message') @lang($message) @enderror
-                                            </div>
-                                        </div>
-                                        <div class="input-box col-12">
-                                            <button class="btn-custom w-100">
-                                                @lang('submit')
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
 
 

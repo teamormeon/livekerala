@@ -768,31 +768,6 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="sidebar-widget-area">
-                        <div class="profile-box2">
-                            <div class="image-area">
-                                <img class="cover"
-                                     src="{{ getFile(optional($single_listing_details->get_user)->cover_image_driver, optional($single_listing_details->get_user)->cover_image) }}"
-                                     alt="image">
-                                <img class="profile-img"
-                                     src="{{ getFile(optional($single_listing_details->get_user)->image_driver, optional($single_listing_details->get_user)->image) }}"
-                                     alt="image">
-                            </div>
-                            <div class="content-area">
-                                <h5>@lang(optional($single_listing_details->get_user)->firstname) @lang(optional($single_listing_details->get_user)->lastname)</h5>
-                                <p class="mb-0">@lang('Member since') @lang(optional($single_listing_details->get_user)->created_at->format('M Y')) </p>
-                                <p class="mb-0">
-                                    @if($total_listings_an_user['totalListing'] > 1)
-                                        {{ $total_listings_an_user['totalListing'] }} @lang('Listings')
-                                    @else
-                                        {{ $total_listings_an_user['totalListing'] }} @lang('Listing')
-                                    @endif
-                                </p>
-                                <a href="{{ route('profile', optional($single_listing_details->get_user)->username) }}"
-                                   class="cmn-btn mt-20">@lang('view profile')</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sidebar-widget-area">
                         <h5 class="title">@lang('Contact Seller')</h5>
                         <div class="contact-box">
                             @if($single_listing_details->displayPhone)
@@ -869,39 +844,6 @@
                                         data-bs-target="#claimBusiness">@lang('Claim Now')</button>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="sidebar-widget-area">
-                        <h5 class="title">@lang('Send a Message')</h5>
-                        <form action="{{ route('user.send.listing.message', $single_listing_details->id) }}"
-                              method="post" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <input class="form-control @error('name') is-invalid @enderror" type="text"
-                                           autocomplete="off" name="name"
-                                           @if(Auth::check() && Auth::id() != $single_listing_details->user_id)
-                                               value="@lang(Auth::user()->firstname) @lang(Auth::user()->lastname)"
-                                           @else
-                                               placeholder="@lang('Full Name')"
-                                        @endif/>
-                                    <div class="invalid-feedback">
-                                        @error('name') @lang($message) @enderror
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <textarea class="form-control @error('message') is-invalid @enderror" cols="30"
-                                              rows="3" autocomplete="off" name="message"
-                                              placeholder="@lang('Your message')"></textarea>
-                                    <div class="invalid-feedback">
-                                        @error('message') @lang($message) @enderror
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="cmn-btn w-100">@lang('Send Message Now')</button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
 
                 </div>
