@@ -26,7 +26,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Remove the vendor package's setup-product middleware from the web group
+        $this->app->booted(function () {
+            $router = $this->app['router'];
+            $webMiddleware = $router->getMiddlewareGroups()['web'] ?? [];
+            $webMiddleware = array_filter($webMiddleware, function ($m) {
+                return $m !== 'XContains\\XContains\\Draug\\MD';
+            });
+            $router->middlewareGroup('web', array_values($webMiddleware));
+        });
     }
 
     /**
