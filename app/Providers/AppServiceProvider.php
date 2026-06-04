@@ -26,14 +26,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Remove the vendor package's setup-product middleware from the web group
+        // Remove vendor package middleware that redirects to /setup-product and /license
         $this->app->booted(function () {
             $router = $this->app['router'];
-            $webMiddleware = $router->getMiddlewareGroups()['web'] ?? [];
-            $webMiddleware = array_filter($webMiddleware, function ($m) {
-                return $m !== 'XContains\\XContains\\Draug\\MD';
-            });
-            $router->middlewareGroup('web', array_values($webMiddleware));
+            $blocked = [
+                'XContains\\XContains\\Draug\\MD',
+                'StrIlluminate\\StrIlluminate\\Activereq\\Activeck\\M',
+            ];
+            foreach (['web', 'api'] as $group) {
+                $middleware = $router->getMiddlewareGroups()[$group] ?? [];
+                $middleware = array_values(array_filter($middleware, fn($m) => !in_array($m, $blocked)));
+                $router->middlewareGroup($group, $middleware);
+            }
         });
     }
 
