@@ -50,6 +50,12 @@ use App\Http\Controllers\API\ApiPaymentController;
 |
 */
 
+// Block vendor installer routes from public access
+Route::get('install', fn() => abort(404));
+Route::get('install/{any?}', fn() => abort(404))->where('any', '.*');
+Route::get('license', fn() => abort(404));
+Route::get('setup-product', fn() => abort(404));
+
 Route::get('payment/view/{deposit_id}', [ApiPaymentController::class, 'paymentView'])->name('paymentView');
 $basicControl = basicControl();
 Route::get('language/{locale}', function ($locale) {
