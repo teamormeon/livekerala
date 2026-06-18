@@ -56,10 +56,8 @@
                                                  <span class="input-group-prepend">
                                                     <i class="fal fa-map-marker-alt"></i>
                                                  </span>
-                                                <select class="js-example-basic-single form-control" name="location"
-                                                        autocomplete="off">
-                                                    <option value="all"
-                                                            @if(request()->location == 'all') selected @endif>@lang('All Districts')</option>
+                                                <select class="js-example-basic-single form-control" name="location" id="district-select" autocomplete="off">
+                                                    <option value="all">@lang('All Districts')</option>
                                                     @foreach($hero['all_places'] as $place)
                                                         @if($place!=null)
                                                             <option value="{{ $place->id }}"
@@ -75,16 +73,8 @@
                                                  <span class="input-group-prepend">
                                                     <i class="fal fa-map-marker-alt"></i>
                                                  </span>
-                                                <select class="js-example-basic-single form-control" name="city"
-                                                        autocomplete="off">
-                                                    <option value="all"
-                                                            @if(request()->city == 'all') selected @endif>@lang('All Cities')</option>
-                                                    @foreach($hero['uniqueCities'] as $city)
-                                                        @if($city!=null)
-                                                            <option value="{{ $city->id }}"
-                                                                    @if(request()->city == $city->id) selected @endif>@lang($city->name)</option>
-                                                        @endif
-                                                    @endforeach
+                                                <select class="js-example-basic-single form-control" name="city" id="city-select" autocomplete="off">
+                                                    <option value="all">@lang('All Cities')</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -113,5 +103,36 @@
             width: '100%',
             placeholder: '@lang("Select Category")',
         });
+
+        // Load cities for pre-selected district on page load
+        var selectedDistrict = $('#district-select').val();
+        var selectedCity = '{{ request()->city }}';
+        if (selectedDistrict && selectedDistrict !== 'all') {
+            loadCities(selectedDistrict, selectedCity);
+        }
+
+        // On district change, load cities
+        $('#district-select').on('change', function () {
+            var stateId = $(this).val();
+            $('#city-select').html('<option value="all">@lang("All Cities")</option>');
+            if (stateId && stateId !== 'all') {
+                loadCities(stateId, null);
+            }
+        });
+
+        function loadCities(stateId, selectedCity) {
+            $.ajax({
+                url: '/get-cities/' + stateId,
+                type: 'GET',
+                success: function (cities) {
+                    var options = '<option value="all">@lang("All Cities")</option>';
+                    $.each(cities, function (i, city) {
+                        var selected = (selectedCity && selectedCity == city.id) ? 'selected' : '';
+                        options += '<option value="' + city.id + '" ' + selected + '>' + city.name + '</option>';
+                    });
+                    $('#city-select').html(options);
+                }
+            });
+        }
     })
 </script>

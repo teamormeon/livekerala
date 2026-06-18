@@ -57,6 +57,7 @@ Route::get('license', fn() => abort(404));
 Route::get('setup-product', fn() => abort(404));
 
 Route::get('payment/view/{deposit_id}', [ApiPaymentController::class, 'paymentView'])->name('paymentView');
+Route::get('get-cities/{state_id}', [ListingController::class, 'getCitiesByState'])->name('getCitiesByState');
 $basicControl = basicControl();
 Route::get('language/{locale}', function ($locale) {
     app()->setLocale($locale);
