@@ -6,7 +6,7 @@ use App\Helpers\UserSystemInfo;
 use App\Http\Controllers\Controller;
 use App\Models\Analytics;
 use App\Models\CollectDynamicFormData;
-use App\Models\City;
+use App\Models\CountryCities;
 use App\Models\Country;
 use App\Models\DynamicForm;
 use App\Models\Follower;
@@ -278,7 +278,7 @@ class ListingController extends Controller
 
     public function getCitiesByState($state_id)
     {
-        $cities = City::where('state_id', $state_id)->where('status', 1)->orderBy('name', 'ASC')->get(['id', 'name']);
+        $cities = CountryCities::where('state_id', $state_id)->where('status', 1)->orderBy('name', 'ASC')->get(['id', 'name']);
         return response()->json($cities);
     }
 

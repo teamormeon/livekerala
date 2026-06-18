@@ -5,8 +5,8 @@ namespace App\Traits;
 use App\Models\Blog;
 use App\Models\ContentDetails;
 use App\Models\Country;
+use App\Models\CountryStates;
 use App\Models\Listing;
-use App\Models\State;
 use App\Models\ListingCategory;
 use Illuminate\Support\Facades\DB;
 
@@ -40,7 +40,7 @@ trait Frontend
                 $data[$section] = [
                     'single' => $singleContent ? collect($singleContent->description ?? [])->merge($singleContent->content->only('media')) : [],
                     'all_categories' => $listingCategories->sortByDesc('id'),
-                    'all_places' => State::select('id', 'name')->where('status', 1)->orderBy('name', 'ASC')->toBase()->get(),
+                    'all_places' => CountryStates::select('id', 'name')->where('status', 1)->orderBy('name', 'ASC')->toBase()->get(),
                     'uniqueCities' => collect(),
                     'highlights_categories' => $listingCategories->random(4),
                 ];
