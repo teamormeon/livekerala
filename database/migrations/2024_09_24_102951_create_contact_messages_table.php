@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->index()->nullable();
             $table->foreignId('client_id')->index()->nullable();
             $table->foreignId('listing_id')->index()->nullable();
-            $table->longText('message')->index()->nullable();
+            $table->longText('message')->nullable();
             $table->timestamps();
         });
     }

@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('google_id')->after('password_reset_token')->nullable();
-            $table->string('facebook_id')->after('google_id')->nullable();
-            $table->string('github_id')->after('facebook_id')->nullable();
+            $table->string('google_id')->nullable();
+            $table->string('facebook_id')->nullable();
+            $table->string('github_id')->nullable();
         });
     }
 
