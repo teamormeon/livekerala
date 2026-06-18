@@ -26,7 +26,7 @@
         "laravel/socialite": "^5.13",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
-        "lcobucci/clock": "^3.0",
+        "lcobucci/clock": "3.2.0",
         "lcobucci/jwt": "^4.3",
         "maatwebsite/excel": "^3.1",
         "mailersend/laravel-driver": "^2.2",
