@@ -1,0 +1,22 @@
+{
+    "About Us" : "About Us",
+    "Our Service" : "Our Service",
+    "Country" : "District",
+    "Countries" : "Districts",
+    "District" : "District",
+    "Select Country" : "Select District",
+    "Select District" : "Select District",
+    "Search Country" : "Search District",
+    "State" : "District section",
+    "States" : "District sections",
+    "Local Area" : "Local Area",
+    "Select State" : "Select District section",
+    "Select Local Area" : "Select Local Area",
+    "City" : "City",
+    "Cities" : "Cities",
+    "Select City" : "Select City",
+    "Location" : "District & City",
+    "Search Location" : "Search Address",
+    "All Districts" : "All Districts",
+    "All Cities" : "All Cities"
+}

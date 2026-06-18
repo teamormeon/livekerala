@@ -1,0 +1,1 @@
+<p>{!! $expiryMessage !!}</p>
