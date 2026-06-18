@@ -15,3 +15,4 @@ yarn-error.log
 /storage/framework/views/*
 /storage/framework/sessions/*
 storage/logs/*.log
+.env
