@@ -58,7 +58,7 @@ class ExpiryDateCron extends Command
 
         foreach ($purchasePackages as $package){
             foreach ($packageExpiryTimes as $time){
-                if(today()->addDays($time->before_expiry_date)->eq(Carbon::parse($package->expire_date)) && today()->lt($package->last_reminder_at)){
+                if(today()->addDays((int)$time->before_expiry_date)->eq(Carbon::parse($package->expire_date)) && today()->lt($package->last_reminder_at)){
                     $details = [
                         'sub'          => '['.basicControl()->site_title.']'.' Sent you a package Information',
                         'message'      => 'Only ' . $time->before_expiry_date . ' days left for your ' . '`' .$package->title. '`' . ' package to expire',
