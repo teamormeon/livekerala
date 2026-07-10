@@ -14,7 +14,9 @@
                     <div class="col-lg-4 col-md-6 mx-auto">
                         <div class="box">
                             <div class="icon-box">
-                                <img src="{{ getFile($item['media']->image->driver, $item['media']->image->path) }}" alt="image" width="64"/>
+                                @if(!empty($item['media']) && !empty($item['media']->image))
+                                    <img src="{{ getFile($item['media']->image->driver, $item['media']->image->path) }}" alt="image" width="64"/>
+                                @endif
                             </div>
                             <div>
                                 <h5>@lang($item['title'])</h5>
@@ -29,4 +31,3 @@
         </div>
     </section>
 @endif
-
