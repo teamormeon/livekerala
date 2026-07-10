@@ -1,5 +1,5 @@
 <!-- blog section -->
-@if (count($blog['popularBlogs']) > 0)
+@if (!empty($blog['popularBlogs']) && count($blog['popularBlogs']) > 0)
     <section class="blog-section">
         <div class="container">
             @if(isset($blog['single']))

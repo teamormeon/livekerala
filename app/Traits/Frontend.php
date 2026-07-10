@@ -42,7 +42,7 @@ trait Frontend
                     'all_categories' => $listingCategories->sortByDesc('id'),
                     'all_places' => CountryStates::select('id', 'name')->where('status', 1)->orderBy('name', 'ASC')->toBase()->get(),
                     'uniqueCities' => collect(),
-                    'highlights_categories' => $listingCategories->random(4),
+                    'highlights_categories' => $listingCategories->count() >= 4 ? $listingCategories->random(4) : $listingCategories,
                 ];
             }elseif ($section == 'listing'){
                 $data[$section] = [
@@ -67,12 +67,10 @@ trait Frontend
                         ->orderByRaw('FIELD(id, ' . implode(',', $sliceCategoryIds) . ')')
                         ->get();
                 } else {
-                    $popularCategories = collect(); // Return an empty collection
+                    $popularCategories = collect();
                 }
                 $data[$section] = [
                     'single' => $singleContent ? collect($singleContent->description ?? [])->merge($singleContent->content->only('media')) : [],
-
-
                     'popularCategories' => $popularCategories
                 ];
             } else {
