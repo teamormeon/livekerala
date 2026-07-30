@@ -35,7 +35,7 @@
     <!-- custom css -->
     <link rel="stylesheet" href="{{ asset(template(true).'css/style.css') }}"/>
     @if(request()->is('/'))
-        <link rel="stylesheet" href="{{ asset(template(true).'css/home-modern.css') }}"/>
+        <link rel="stylesheet" href="{{ asset(template(true).'css/home-modern.css') }}?v=2026073004"/>
     @endif
     @stack('css-lib')
     <!----  Push your custom css  ----->
