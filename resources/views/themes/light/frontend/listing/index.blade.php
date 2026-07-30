@@ -6,15 +6,14 @@
 @endsection
 
 @push('style')
-    <link rel="stylesheet" href="{{ asset('assets/global/css/frontend_leaflet.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets/global/css/frontendControl.FullScreen.css') }}"/>
+    <link rel="stylesheet" href="{{ asset(template(true).'css/listing-modern.css') }}"/>
 @endpush
 
 @section('content')
     <section class="listing-section">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xl-2 col-lg-2 col-sm-12 my-4">
+                <div class="col-xl-3 col-lg-4 col-sm-12 my-4">
                     <form action="{{ route('listings') }}" method="get">
                         <div class="filter-area">
                             <div class="filter-box">
@@ -164,18 +163,16 @@
                 </div>
 
 
-                <div class="col-xl-6 col-lg-6 col-sm-12 my-4">
-                    @if( 0 <count($all_listings))
-                        <input type="hidden" id="googleMapAppKey" value="{{ basicControl()->google_map_app_key }}">
-                        <input type="hidden" id="google_map_id" value="{{ basicControl()->google_map_id }}">
+                <div class="col-xl-9 col-lg-8 col-sm-12 my-4">
+                    @if( 0 <count($all_listings))google_map_id }}">
                         <div class="row g-4">
                             @forelse($all_listings as $key => $listing)
                                 @php
                                     $total = $listing->reviews()[0]->total;
                                     $average_review = $listing->reviews()[0]->average;
                                 @endphp
-                                <div class="col-lg-6 col-md-6 col-sm-12">
-                                    <div class="listing-box listing-map-box" data-lat="{{ $listing->lat }}"
+                                <div class="col-xl-4 col-md-6 col-sm-12">
+                                    <div class="listing-box" data-lat="{{ $listing->lat }}"
                                          data-long="{{ $listing->long }}"
                                          data-title="@lang( Str::limit($listing->title, 30))"
                                          data-image="{{ getFile($listing->thumbnail_driver, $listing->thumbnail) }}"
@@ -269,10 +266,6 @@
                         </div>
                     @endif
                 </div>
-
-                <div class="col-xl-4 col-lg-4 col-sm-12">
-                    <div class="h-100" id="map"></div>
-                </div>
             </div>
         </div>
     </section>
@@ -280,16 +273,6 @@
 @endsection
 
 @push('script')
-    @if(basicControl()->is_google_map == 1)
-        <script src="https://maps.googleapis.com/maps/api/js?key={{ basicControl()->google_map_app_key }}&loading=async&callback=initMap&libraries=marker" defer></script>
-        <script src="{{ asset('assets/global/js/frontend_google_map.js') }}"></script>
-    @else
-        <script src="https://maps.googleapis.com/maps/api/js?key={{ basicControl()->google_map_app_key }}&loading=async"></script>
-        <script src="{{ asset('assets/global/js/frontend_leaflet.js') }}"></script>
-        <script src="{{ asset('assets/global/js/frontendControl.FullScreen.js') }}"></script>
-        <script src="{{ asset('assets/global/js/frontend_map.js') }}"></script>
-    @endif
-
     <script>
         'use strict'
 

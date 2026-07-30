@@ -109,7 +109,7 @@ class ListingController extends Controller
             ->when($request->exists('popular') == false, function ($query5) use ($search) {
                 return $query5->orderBy('id', 'desc');
             })
-            ->paginate(6);
+            ->paginate(8);
 
 
         $data['all_places'] = Country::select('id', 'name')->where('status', 1)->orderBy('name', 'ASC')->toBase()->get();
