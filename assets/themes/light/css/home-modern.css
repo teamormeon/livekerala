@@ -328,3 +328,15 @@
         height: 200px !important;
     }
 }
+
+
+/* Account for the desktop header overlay */
+@media (min-width: 992px) {
+    .home-section .text-box {
+        transform: translateY(42px);
+    }
+
+    .home-section .text-box h1 {
+        font-size: clamp(40px, 5vw, 64px);
+    }
+}
