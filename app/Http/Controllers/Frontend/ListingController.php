@@ -54,7 +54,7 @@ class ListingController extends Controller
                     ->first(fn ($category) => Str::slug(optional($category->details)->name) === $id);
 
                 abort_if($category === null, 404);
-                $id = $category->id;
+                $id = (string) $category->id;
             }
         }
 
