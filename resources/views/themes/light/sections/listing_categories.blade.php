@@ -17,7 +17,7 @@
             @endif
             <div class="row g-3 g-lg-4">
                 @forelse($listing_categories['popularCategories'] as $category)
-                    <div class="col-xl-3 col-md-6 col-6">
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-6">
                         <a href="{{ route('listings', \Illuminate\Support\Str::slug(optional($category->details)->name)) }}">
                             <div class="category-box">
                                 <div class="icon-box">

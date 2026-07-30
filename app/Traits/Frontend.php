@@ -57,7 +57,7 @@ trait Frontend
             } elseif ($section == 'listing_categories'){
                 $categoryIds = array_count_values(Listing::where('status',1)->where('is_active',1)->pluck('category_id')->flatten()->toArray());
                 arsort($categoryIds);
-                $sliceCategoryIds = array_keys(array_slice($categoryIds, 0, 12, true));
+                $sliceCategoryIds = array_keys(array_slice($categoryIds, 0, 18, true));
 
                 if (!empty($sliceCategoryIds)) {
                     $popularCategories = ListingCategory::with('details')
