@@ -51,11 +51,13 @@ class ListingController extends Controller
                 return $query->whereJsonContains('category_id', $id);
             })
             ->when(isset($search['name']), function ($query) use ($search) {
-                return $query->where('title', 'LIKE', "%{$search['name']}%")
-                    ->orWhere('description', 'LIKE', "%{$search['name']}%")
-                    ->orWhereHas('listingSeo', function ($tQuery) use ($search) {
-                        $tQuery->where('meta_keywords', 'LIKE', "%{$search['name']}%");
-                    });
+                return $query->where(function ($query) use ($search) {
+                    $query->where('title', 'LIKE', "%{$search['name']}%")
+                        ->orWhere('description', 'LIKE', "%{$search['name']}%")
+                        ->orWhereHas('listingSeo', function ($tQuery) use ($search) {
+                            $tQuery->where('meta_keywords', 'LIKE', "%{$search['name']}%");
+                        });
+                });
             })
             ->when(isset($search['location']) && $search['location'] != 'all', function ($query2) use ($search) {
                 return $query2->whereHas('get_place', function ($q) use ($search) {

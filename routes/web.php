@@ -238,8 +238,8 @@ Route::group(['middleware' => ['maintenanceMode']], function () use ($basicContr
 
 
 
-    Route::get('/dir', [ListingController::class, 'listings'])->name('listings');
-    Route::get('/listings/{id?}/{type?}', [ListingController::class, 'listings']);
+    Route::get('/dir', [ListingController::class, 'listings']);
+    Route::get('/listings/{id?}/{type?}', [ListingController::class, 'listings'])->name('listings');
     Route::get('/dir/{slug}', [ListingController::class, 'listingDetails'])->name('listing.details');
     Route::get('/listing/{slug}', [ListingController::class, 'listingDetails']);
     Route::get('/listing-reviews/{id?}', [ListingController::class, 'listingReviewsGet'])->name('listing.reviews.get');
