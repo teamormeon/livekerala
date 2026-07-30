@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ListingController extends Controller
 {
@@ -37,6 +38,25 @@ class ListingController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         $search = $request->all();
         $categoryIds = $request->category;
+
+        if ($id !== null) {
+            if (ctype_digit((string) $id)) {
+                $category = ListingCategory::with('details')->findOrFail($id);
+                $categorySlug = Str::slug(optional($category->details)->name);
+
+                if ($categorySlug !== '') {
+                    return redirect()->route('listings', ['id' => $categorySlug], 301);
+                }
+            } else {
+                $category = ListingCategory::with('details')
+                    ->where('status', 1)
+                    ->get()
+                    ->first(fn ($category) => Str::slug(optional($category->details)->name) === $id);
+
+                abort_if($category === null, 404);
+                $id = $category->id;
+            }
+        }
 
         $data['all_listings'] = Listing::with(['get_user', 'get_place', 'get_reviews', 'get_package', 'listingSeo'])
             ->when(isset($categoryIds) && !in_array('all', $categoryIds), function ($query) use ($categoryIds) {
