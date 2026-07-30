@@ -50,16 +50,14 @@ trait Frontend
                     'popularListings' => Listing::with(['get_reviews', 'get_user'])
                         ->where('status', 1)->where('is_active', 1)
                         ->withCount('getFavourite')
-                        ->inRandomOrder()
+                        ->latest()
+                        ->take(8)
                         ->get()
-                        ->sortByDesc(function ($item) {
-                            return $item->avgRating;
-                        })->take(4)
                 ];
             } elseif ($section == 'listing_categories'){
                 $categoryIds = array_count_values(Listing::where('status',1)->where('is_active',1)->pluck('category_id')->flatten()->toArray());
                 arsort($categoryIds);
-                $sliceCategoryIds = array_keys(array_slice($categoryIds, 0, 8, true));
+                $sliceCategoryIds = array_keys(array_slice($categoryIds, 0, 12, true));
 
                 if (!empty($sliceCategoryIds)) {
                     $popularCategories = ListingCategory::with('details')
