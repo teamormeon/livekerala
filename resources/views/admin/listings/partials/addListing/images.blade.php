@@ -5,7 +5,7 @@
                 <h3 class="mb-3">@lang('Thumbnail')</h3>
                 <div class="thumbnailImage">
                     <div class="form-group">
-                        <input type="file" id="thumbnailImageUpload" class="form-control-file" name="thumbnail">
+                        <input type="file" id="thumbnailImageUpload" class="form-control-file" name="thumbnail" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" required>
                         <span>@lang('Select Image')</span>
                     </div>
                     <img id="thumbnail" class="thumbnail d-none" src="" alt="Image Thumbnail">

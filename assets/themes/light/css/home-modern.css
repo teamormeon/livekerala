@@ -614,3 +614,167 @@
     color: var(--lk-ink) !important;
     font-size: 14px !important;
 }
+
+/* Live Kerala yellow-blue visual identity */
+:root {
+    --lk-brand: #f4c400;
+    --lk-brand-dark: #d9ad00;
+    --lk-emerald: #1d5bd7;
+    --lk-emerald-dark: #1746a2;
+    --lk-ink: #171b24;
+    --lk-muted: #667085;
+    --lk-background: #f6f8fc;
+    --lk-border: #dfe4ec;
+}
+
+.home-section .overlay {
+    background-image:
+        linear-gradient(115deg, rgba(14, 25, 46, .94), rgba(29, 91, 215, .70)),
+        url(../img/overlay.png);
+}
+
+.home-section .search-bar .input-box .input-group-prepend {
+    color: var(--lk-secondary);
+}
+
+.home-section .search-bar .btn-custom {
+    background: var(--lk-primary);
+    border-color: var(--lk-primary);
+    color: var(--lk-ink);
+    box-shadow: 0 10px 24px rgba(244, 196, 0, .24);
+}
+
+.category-section {
+    background:
+        radial-gradient(circle at 90% 10%, rgba(29, 91, 215, .07), transparent 28%),
+        var(--lk-background);
+}
+
+.category-section .header-text h5,
+.popular-listings .header-text h5 {
+    color: var(--lk-secondary);
+}
+
+.category-section .category-directory-grid .category-box .icon-box {
+    background: #edf3ff !important;
+}
+
+.category-section .category-directory-item:nth-child(5n + 1) .icon-box i {
+    color: #1d5bd7 !important;
+}
+
+.category-section .category-directory-item:nth-child(5n + 2) .icon-box i {
+    color: #e83e8c !important;
+}
+
+.category-section .category-directory-item:nth-child(5n + 3) .icon-box i {
+    color: #f27624 !important;
+}
+
+.category-section .category-directory-item:nth-child(5n + 4) .icon-box i {
+    color: #7656d6 !important;
+}
+
+.category-section .category-directory-item:nth-child(5n + 5) .icon-box i {
+    color: #08a7b5 !important;
+}
+
+.category-section .category-directory-grid .category-box:hover {
+    border-color: var(--lk-secondary);
+    box-shadow: 0 12px 30px rgba(29, 91, 215, .13);
+}
+
+.category-section .category-view-all .category-box {
+    background: linear-gradient(145deg, #fff9d6, #ffef96) !important;
+    border-color: var(--lk-primary) !important;
+}
+
+.popular-listings .listing-box:hover {
+    border-color: rgba(29, 91, 215, .35);
+    box-shadow: 0 20px 45px rgba(29, 91, 215, .11);
+}
+
+.popular-listings .listing-box .img-box .save {
+    color: var(--lk-secondary);
+}
+
+/* Preserve original hero photograph; remove green and blue colour overlays */
+:root {
+    --lk-brand: #f4c400;
+    --lk-brand-dark: #d9ad00;
+    --lk-emerald: #ff6b3d;
+    --lk-emerald-dark: #e95328;
+    --lk-ink: #191919;
+    --lk-muted: #666666;
+    --lk-background: #f8f8f8;
+    --lk-border: #e4e4e4;
+}
+
+.home-section .overlay {
+    background-image: linear-gradient(
+        110deg,
+        rgba(18, 18, 18, .64),
+        rgba(18, 18, 18, .38)
+    ) !important;
+}
+
+/* Yellow remains the primary hero action */
+.home-section .search-bar .btn-custom {
+    background: var(--lk-brand) !important;
+    border-color: var(--lk-brand) !important;
+    color: var(--lk-ink) !important;
+    box-shadow: 0 10px 24px rgba(244, 196, 0, .25);
+}
+
+.home-section .search-bar .btn-custom:hover {
+    background: var(--lk-brand-dark) !important;
+    border-color: var(--lk-brand-dark) !important;
+}
+
+/* Orange replaces blue in controls and section accents */
+.home-section .search-bar .input-box .input-group-prepend,
+.category-section .header-text h5,
+.popular-listings .header-text h5,
+.popular-listings .listing-box .img-box .save {
+    color: var(--lk-secondary) !important;
+}
+
+.category-section {
+    background:
+        radial-gradient(circle at 90% 10%, rgba(255, 107, 61, .06), transparent 28%),
+        #f8f8f8 !important;
+}
+
+.category-section .category-directory-item:nth-child(5n + 1) .icon-box i {
+    color: #ff6b3d !important;
+}
+
+.category-section .category-directory-item:nth-child(5n + 2) .icon-box i {
+    color: #e83e8c !important;
+}
+
+.category-section .category-directory-item:nth-child(5n + 3) .icon-box i {
+    color: #e7a800 !important;
+}
+
+.category-section .category-directory-item:nth-child(5n + 4) .icon-box i {
+    color: #8b5cc7 !important;
+}
+
+.category-section .category-directory-item:nth-child(5n + 5) .icon-box i {
+    color: #18a875 !important;
+}
+
+.category-section .category-directory-grid .category-box .icon-box {
+    background: #fff1ec !important;
+}
+
+.category-section .category-directory-grid .category-box:hover {
+    border-color: var(--lk-secondary) !important;
+    box-shadow: 0 12px 30px rgba(255, 107, 61, .12);
+}
+
+.popular-listings .listing-box:hover {
+    border-color: rgba(255, 107, 61, .35);
+    box-shadow: 0 20px 45px rgba(255, 107, 61, .10);
+}

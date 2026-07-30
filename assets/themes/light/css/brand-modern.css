@@ -1,0 +1,111 @@
+:root {
+    --lk-primary: #f4c400;
+    --lk-primary-dark: #d9ad00;
+    --lk-secondary: #1d5bd7;
+    --lk-secondary-dark: #1746a2;
+    --lk-ink: #171b24;
+    --lk-muted: #667085;
+    --lk-background: #f6f8fc;
+    --lk-surface: #ffffff;
+    --lk-border: #dfe4ec;
+    --lk-whatsapp: #25d366;
+}
+
+/* Global Live Kerala controls */
+.btn-custom {
+    background: var(--lk-primary);
+    border-color: var(--lk-primary);
+    color: var(--lk-ink);
+    font-weight: 600;
+}
+
+.btn-custom:hover,
+.btn-custom:focus {
+    background: var(--lk-primary-dark);
+    border-color: var(--lk-primary-dark);
+    color: var(--lk-ink);
+}
+
+.navbar {
+    background: rgba(255, 255, 255, .98);
+    border-bottom: 1px solid var(--lk-border);
+    box-shadow: 0 4px 20px rgba(23, 27, 36, .06);
+}
+
+.navbar .navbar-nav .nav-link {
+    color: var(--lk-ink);
+}
+
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .active > .nav-link {
+    color: var(--lk-secondary);
+}
+
+.navbar .navbar-text .btn-custom {
+    background: var(--lk-secondary);
+    border-color: var(--lk-secondary);
+    color: #fff;
+    box-shadow: 0 7px 18px rgba(29, 91, 215, .18);
+}
+
+.navbar .navbar-text .btn-custom:hover {
+    background: var(--lk-secondary-dark);
+    border-color: var(--lk-secondary-dark);
+    color: #fff;
+}
+
+.bottom-nav .nav-link.active,
+.bottom-nav .nav-link:hover {
+    color: var(--lk-secondary);
+}
+
+a {
+    transition: color .2s ease, border-color .2s ease, background-color .2s ease;
+}
+
+.form-control:focus,
+.form-select:focus,
+.select2-container--focus .select2-selection {
+    border-color: var(--lk-secondary) !important;
+    box-shadow: 0 0 0 3px rgba(29, 91, 215, .12) !important;
+}
+
+/* Final Live Kerala yellow-orange identity */
+:root {
+    --lk-primary: #f4c400;
+    --lk-primary-dark: #d9ad00;
+    --lk-secondary: #ff6b3d;
+    --lk-secondary-dark: #e95328;
+    --lk-ink: #191919;
+    --lk-muted: #666666;
+    --lk-background: #f8f8f8;
+    --lk-surface: #ffffff;
+    --lk-border: #e4e4e4;
+    --lk-whatsapp: #25d366;
+}
+
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .active > .nav-link,
+.bottom-nav .nav-link.active,
+.bottom-nav .nav-link:hover {
+    color: var(--lk-secondary);
+}
+
+.navbar .navbar-text .btn-custom {
+    background: var(--lk-secondary);
+    border-color: var(--lk-secondary);
+    color: #fff;
+    box-shadow: 0 7px 18px rgba(255, 107, 61, .20);
+}
+
+.navbar .navbar-text .btn-custom:hover {
+    background: var(--lk-secondary-dark);
+    border-color: var(--lk-secondary-dark);
+}
+
+.form-control:focus,
+.form-select:focus,
+.select2-container--focus .select2-selection {
+    border-color: var(--lk-secondary) !important;
+    box-shadow: 0 0 0 3px rgba(255, 107, 61, .13) !important;
+}

@@ -6,7 +6,7 @@
 @endsection
 
 @push('style')
-    <link rel="stylesheet" href="{{ asset(template(true).'css/listing-modern.css') }}"/>
+    <link rel="stylesheet" href="{{ asset(template(true).'css/listing-modern.css') }}?v=2026073002"/>
 @endpush
 
 @section('content')
@@ -164,7 +164,7 @@
 
 
                 <div class="col-xl-9 col-lg-8 col-sm-12 my-4">
-                    @if( 0 <count($all_listings))google_map_id }}">
+                    @if(0 < count($all_listings))
                         <div class="row g-4">
                             @forelse($all_listings as $key => $listing)
                                 @php

@@ -125,7 +125,7 @@ class MyListingController extends Controller
             'working_day.*' => 'nullable|string|max:20',
             'social_url.*' => 'nullable|url|max:180',
             'youtube_video_id' => 'nullable|string|max:20',
-            'thumbnail' => 'nullable|mimes:jpeg,png,jpg|max:51200',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
             'listing_image.*' => 'nullable|mimes:jpeg,png,jpg',
             'amenity_id.*' => 'nullable|numeric|exists:amenities,id',
             'product_title.*' => 'nullable|string|max:150',
@@ -140,7 +140,9 @@ class MyListingController extends Controller
         ];
 
         $message = [
-            'thumbnail.mimes' => __('The thumbnail must be a file of type: jpg, jpeg, png.'),
+            'thumbnail.required' => __('A thumbnail image is required.'),
+            'thumbnail.image' => __('The thumbnail must be a valid image.'),
+            'thumbnail.mimes' => __('The thumbnail must be a file of type: jpg, jpeg, png, webp.'),
             'thumbnail.max' => __('The thumbnail may not be greater than 5 MB.'),
             'category_id.required' => __('This category field is required.'),
             'category_id.array' => __('The category must be an array.'),
@@ -372,6 +374,8 @@ class MyListingController extends Controller
         ];
 
         $message = [
+            'thumbnail.required' => __('A thumbnail image is required.'),
+            'thumbnail.image' => __('The thumbnail must be a valid image.'),
             'thumbnail.mimes' => __('The thumbnail must be a file of type: jpg, jpeg, png.'),
             'thumbnail.max' => __('The thumbnail may not be greater than 5 MB.'),
             'category_id.required' => __('This category field is required.'),

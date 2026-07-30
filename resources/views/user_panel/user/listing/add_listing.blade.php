@@ -598,7 +598,7 @@
                                 <div class="img-box">
                                     <input accept="image/*" type="file" onchange="previewImage('frame')"
                                            name="thumbnail" class="@error('thumbnail') is-invalid @enderror"
-                                           value="{{ old('thumbnail') }}"/>
+                                           value="{{ old('thumbnail') }}" required>
                                     <span class="select-file">@lang('Select Image')</span>
                                     <img id="frame" src="{{ asset(getFile(config('location.default'))) }}"
                                          class="img-fluid"/>

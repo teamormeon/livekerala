@@ -34,8 +34,9 @@
     <link rel="stylesheet" href="{{ asset('assets/global/css/fontawesome.min.css') }}">
     <!-- custom css -->
     <link rel="stylesheet" href="{{ asset(template(true).'css/style.css') }}"/>
+    <link rel="stylesheet" href="{{ asset(template(true).'css/brand-modern.css') }}?v=2026073002"/>
     @if(request()->is('/'))
-        <link rel="stylesheet" href="{{ asset(template(true).'css/home-modern.css') }}?v=2026073004"/>
+        <link rel="stylesheet" href="{{ asset(template(true).'css/home-modern.css') }}?v=2026073006"/>
     @endif
     @stack('css-lib')
     <!----  Push your custom css  ----->

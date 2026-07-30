@@ -128,3 +128,68 @@
         padding-right: 16px;
     }
 }
+
+/* Live Kerala yellow-blue listing identity */
+:root {
+    --lk-brand: #f4c400;
+    --lk-brand-dark: #d9ad00;
+    --lk-emerald: #1d5bd7;
+    --lk-emerald-dark: #1746a2;
+    --lk-ink: #171b24;
+    --lk-muted: #667085;
+    --lk-background: #f6f8fc;
+    --lk-border: #dfe4ec;
+}
+
+.listing-section {
+    background: var(--lk-background);
+}
+
+.listing-section .filter-area {
+    border-top: 5px solid var(--lk-brand);
+}
+
+.listing-section .filter-box h5,
+.listing-section .listing-box .title {
+    color: var(--lk-ink);
+}
+
+.listing-section .btn-custom {
+    background: var(--lk-brand);
+    border-color: var(--lk-brand);
+    color: var(--lk-ink);
+}
+
+.listing-section .btn-custom:hover {
+    background: var(--lk-brand-dark);
+    border-color: var(--lk-brand-dark);
+    color: var(--lk-ink);
+}
+
+.listing-section .listing-box:hover {
+    border-color: rgba(29, 91, 215, .35);
+    box-shadow: 0 14px 38px rgba(29, 91, 215, .11);
+}
+
+/* Final yellow-orange listing identity */
+:root {
+    --lk-brand: #f4c400;
+    --lk-brand-dark: #d9ad00;
+    --lk-emerald: #ff6b3d;
+    --lk-emerald-dark: #e95328;
+    --lk-ink: #191919;
+    --lk-muted: #666666;
+    --lk-background: #f8f8f8;
+    --lk-border: #e4e4e4;
+}
+
+.listing-section .listing-box:hover {
+    border-color: rgba(255, 107, 61, .35);
+    box-shadow: 0 14px 38px rgba(255, 107, 61, .10);
+}
+
+.listing-section .form-control:focus,
+.listing-section .select2-container--focus .select2-selection {
+    border-color: var(--lk-secondary) !important;
+    box-shadow: 0 0 0 3px rgba(255, 107, 61, .12) !important;
+}
